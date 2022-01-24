@@ -6,6 +6,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
+import com.schwarzit.spectralIntellijPlugin.exceptions.ProjectSettingsException;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
 import com.schwarzit.spectralIntellijPlugin.exceptions.TempFileException;
 import com.schwarzit.spectralIntellijPlugin.models.SpectralIssue;
@@ -25,21 +26,32 @@ import static com.schwarzit.spectralIntellijPlugin.models.SpectralIssue.mapSever
 
 public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<SpectralIssue>> {
     private final SpectralRunner spectralRunner;
+    private final BaseSettingsState projectSettingsState;
+    private final NotificationHandler notificationHandler;
 
-    public SpectralExternalAnnotator() {
+    @SuppressWarnings("unused")
+    public SpectralExternalAnnotator() throws ProjectSettingsException {
+        this.notificationHandler = NotificationHandler.getInstance();
+        this.projectSettingsState = ProjectSettingsState.getInstance();
+
         try {
             spectralRunner = new SpectralRunner(StorageManager.getInstance());
         } catch (SpectralException e) {
-            NotificationHandler.showNotification("Spectral installation failed", e.getMessage(), NotificationType.ERROR);
+            notificationHandler.showNotification("Spectral installation failed", e.getMessage(), NotificationType.ERROR);
             throw new RuntimeException("Spectral installation failed", e);
         }
     }
 
+    public SpectralExternalAnnotator(SpectralRunner spectralRunner, BaseSettingsState projectSettingsState, NotificationHandler notificationHandler) {
+        this.spectralRunner = spectralRunner;
+        this.projectSettingsState = projectSettingsState;
+        this.notificationHandler = notificationHandler;
+    }
+
     @Override
     public @Nullable PsiFile collectInformation(@NotNull PsiFile file) {
-        BaseSettingsState settingsState = ProjectSettingsState.getInstance(file.getProject());
         @NotNull Path path = file.getVirtualFile().toNioPath();
-        PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:" + settingsState.getIncludedFiles());
+        PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:" + projectSettingsState.getIncludedFiles());
 
         boolean matches = pathMatcher.matches(path);
         if (!matches) return null;
@@ -52,8 +64,7 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
         String fileContent = file.getText();
         Project project = file.getProject();
         Document document = file.getViewProvider().getDocument();
-        BaseSettingsState settingsState = ProjectSettingsState.getInstance(project);
-        String rulesetPath = settingsState.getRuleset();
+        String rulesetPath = projectSettingsState.getRuleset();
 
         try {
             List<SpectralIssue> spectralIssues = spectralRunner.lint(fileContent, rulesetPath);
@@ -62,7 +73,7 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
         } catch (TempFileException e) {
             System.out.println(e.getMessage());
         } catch (SpectralException e) {
-            NotificationHandler.showNotification("Linting failed", e.getMessage(), NotificationType.WARNING, project);
+            notificationHandler.showNotification("Linting failed", e.getMessage(), NotificationType.WARNING, project);
         }
 
         return Collections.emptyList();

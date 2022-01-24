@@ -8,19 +8,27 @@ import icons.SpectralIcons;
 import org.jetbrains.annotations.Nullable;
 
 public class NotificationHandler {
-    private static Project project;
+    private static NotificationHandler instance;
+    private Project project;
 
-    public static void initialize(Project project) {
-        NotificationHandler.project = project;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
-    public static void showNotification(String title, String content, NotificationType type, @Nullable Project project) {
+    public void showNotification(String title, String content, NotificationType type, @Nullable Project project) {
         Notification notification = new Notification("Spectral", title, content, type);
         notification.setIcon(SpectralIcons.SpectralLogo);
         Notifications.Bus.notify(notification, project);
     }
 
-    public static void showNotification(String title, String content, NotificationType type) {
-        NotificationHandler.showNotification(title, content, type, project);
+    public void showNotification(String title, String content, NotificationType type) {
+        showNotification(title, content, type, project);
+    }
+
+    public static NotificationHandler getInstance() {
+        if (instance == null) {
+            instance = new NotificationHandler();
+        }
+        return instance;
     }
 }

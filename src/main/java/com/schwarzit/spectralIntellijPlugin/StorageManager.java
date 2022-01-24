@@ -21,14 +21,25 @@ import java.util.Objects;
 
 public class StorageManager {
     private static StorageManager instance;
+    private final NotificationHandler notificationHandler;
     protected String EXECUTABLE_PATH;
-    protected final Path STORAGE_PATH;
+    protected Path STORAGE_PATH;
 
     private StorageManager() throws SpectralException {
-        String os = System.getProperty("os.name").toLowerCase();
+        this.notificationHandler = NotificationHandler.getInstance();
+        initialize();
+    }
+
+    public StorageManager(NotificationHandler notificationHandler) throws SpectralException {
+        this.notificationHandler = notificationHandler;
+        initialize();
+    }
+
+    private void initialize() throws SpectralException {
+        String os = System.getProperty("os.name");
         String spectralExecutablesPath = "spectralExecutables/";
 
-        this.EXECUTABLE_PATH = calculateStoragePath(os, spectralExecutablesPath);
+        this.EXECUTABLE_PATH = calculateExecutablePath(os, spectralExecutablesPath);
 
         try {
             this.STORAGE_PATH = calculateStoragePath();
@@ -43,10 +54,12 @@ public class StorageManager {
         return Objects.requireNonNull(plugin).getPluginPath().toAbsolutePath();
     }
 
-    private String calculateStoragePath(String os, String spectralExecutablesPath) throws SpectralException {
-        if (os.contains("win")) return spectralExecutablesPath + "spectral-windows.exe";
-        else if (os.contains("mac")) return spectralExecutablesPath + "spectral-macos";
-        else if (os.contains("nix") || os.contains("nux") || os.contains("aix"))
+    private String calculateExecutablePath(String os, String spectralExecutablesPath) throws SpectralException {
+        String lowerCaseOS = os.toLowerCase();
+
+        if (lowerCaseOS.contains("win")) return spectralExecutablesPath + "spectral-windows.exe";
+        else if (lowerCaseOS.contains("mac")) return spectralExecutablesPath + "spectral-macos";
+        else if (lowerCaseOS.contains("nix") || lowerCaseOS.contains("nux") || lowerCaseOS.contains("aix"))
             return spectralExecutablesPath + "spectral-linux";
 
         throw new SpectralException("Unable to identify matching binary for operating system: " + os);
@@ -90,9 +103,9 @@ public class StorageManager {
             String content = "<p>Unable to download default ruleset from:</p><a href=\"" + e.getURL() + "\">" + e.getURL() + "</a>";
             if (defaultRulesetExists) {
                 content += "<br>Using previously downloaded version, the Rules might be out of date.";
-                NotificationHandler.showNotification("Ruleset download failed", content, NotificationType.WARNING);
+                notificationHandler.showNotification("Ruleset download failed", content, NotificationType.WARNING);
             } else {
-                NotificationHandler.showNotification("Ruleset download failed", content, NotificationType.ERROR);
+                notificationHandler.showNotification("Ruleset download failed", content, NotificationType.ERROR);
                 throw new RuntimeException("Initial ruleset download failed", e);
             }
         }

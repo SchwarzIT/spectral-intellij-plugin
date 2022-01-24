@@ -45,4 +45,12 @@ public class PluginSettings {
     public boolean equals(BaseSettingsComponent ui) {
         return Objects.equals(this.ruleset, ui.getRulesetPath()) && Objects.equals(this.includedFiles, ui.getIncludedFiles());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PluginSettings settings = (PluginSettings) o;
+        return Objects.equals(ruleset, settings.ruleset) && Objects.equals(includedFiles, settings.includedFiles);
+    }
 }

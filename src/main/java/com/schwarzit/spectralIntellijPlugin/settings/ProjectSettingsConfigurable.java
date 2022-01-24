@@ -1,11 +1,11 @@
 package com.schwarzit.spectralIntellijPlugin.settings;
 
-import com.intellij.openapi.project.Project;
+import com.schwarzit.spectralIntellijPlugin.exceptions.ProjectSettingsException;
 import org.jetbrains.annotations.Nls;
 
 public class ProjectSettingsConfigurable extends BaseSettingsConfigurable {
-    public ProjectSettingsConfigurable(Project project) {
-        super(new BaseSettingsComponent(), ProjectSettingsState.getInstance(project));
+    public ProjectSettingsConfigurable() throws ProjectSettingsException {
+        super(new BaseSettingsComponent(), ProjectSettingsState.getInstance());
     }
 
     @Nls(capitalization = Nls.Capitalization.Title)

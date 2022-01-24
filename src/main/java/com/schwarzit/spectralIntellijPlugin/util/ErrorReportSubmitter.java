@@ -6,6 +6,7 @@ import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.SubmittedReportInfo;
 import com.intellij.openapi.util.NlsActions;
 import com.intellij.util.Consumer;
+import com.schwarzit.spectralIntellijPlugin.config.Config;
 import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +18,20 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class ErrorReportSubmitter extends com.intellij.openapi.diagnostic.ErrorReportSubmitter {
+    private final NotificationHandler notificationHandler;
+    private final String errorReportingURL;
+
+    @SuppressWarnings("unused")
+    public ErrorReportSubmitter() {
+        this.notificationHandler = NotificationHandler.getInstance();
+        this.errorReportingURL = Config.Instance.ERROR_REPORTING_URL();
+    }
+
+    public ErrorReportSubmitter(NotificationHandler notificationHandler, String errorReportingURL) {
+        this.notificationHandler = notificationHandler;
+        this.errorReportingURL = errorReportingURL;
+    }
+
     @Override
     public @NlsActions.ActionText @NotNull String getReportActionText() {
         return "Create an Issue on Github";
@@ -32,14 +47,14 @@ public class ErrorReportSubmitter extends com.intellij.openapi.diagnostic.ErrorR
 
             // Building an url to open, so the user can directly create an issue on GitHub
             // See: https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue#creating-an-issue-from-a-url-query
-            URI uri = new URIBuilder("https://github.com/stoplightio/spectral/issues/new") // ToDo: use issue url of plugin open source repo
+            URI uri = new URIBuilder(errorReportingURL)
                     .addParameter("title", "")
                     .addParameter("body", body)
                     .build();
 
             BrowserUtil.browse(uri);
         } catch (URISyntaxException e) {
-            NotificationHandler.showNotification("Invalid error report uri", e.getMessage(), NotificationType.ERROR);
+            notificationHandler.showNotification("Invalid error report uri", e.getMessage(), NotificationType.ERROR);
             return false;
         }
 

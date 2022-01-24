@@ -1,5 +1,6 @@
 package com.schwarzit.spectralIntellijPlugin;
 
+import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.ScriptRunnerUtil;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
@@ -16,7 +17,7 @@ import org.mockito.Mockito;
 import java.nio.file.Path;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -54,12 +55,12 @@ class SpectralRunnerTest {
     }
 
     @Test
-    void lint() throws SpectralException, TempFileException {
+    void testLint() throws SpectralException, TempFileException {
         when(mockStorageManager.getExecutablePath()).thenReturn("spectral");
         when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
 
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
-            scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(any(GeneralCommandLine.class))).thenReturn(spectralOutput);
+            scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput);
 
             List<SpectralIssue> issues = spectralRunner.lint("FileContent", "RulesetPath");
 
@@ -72,6 +73,44 @@ class SpectralRunnerTest {
             Assertions.assertEquals(1, issue.getSeverity());
             Assertions.assertEquals(new ErrorRange(new ErrorPosition(3, 36), new ErrorPosition(41, 27)), issue.getRange());
             Assertions.assertEquals("/openapi/oas_3.json", issue.getSource());
+        }
+    }
+
+    @Test
+    void testLintWithExecutionError() {
+        when(mockStorageManager.getExecutablePath()).thenReturn("spectral");
+        when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
+
+        try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
+            scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenThrow(new ExecutionException("Execution failed"));
+            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint("FileContent", "RulesetPath"));
+            Assertions.assertTrue(spectralException.getMessage().contains("Execution of Spectral failed"));
+        }
+    }
+
+    @Test
+    void testLintWithSubstringError() {
+        when(mockStorageManager.getExecutablePath()).thenReturn("spectral");
+        when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
+
+        try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
+            scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput.substring(0, spectralOutput.lastIndexOf(']')));
+
+            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint("FileContent", "RulesetPath"));
+            Assertions.assertTrue(spectralException.getMessage().contains("Execution of Spectral failed"));
+        }
+    }
+
+    @Test
+    void testLintWithParsingError() {
+        when(mockStorageManager.getExecutablePath()).thenReturn("spectral");
+        when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
+
+        try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
+            scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput.replace("\"", ""));
+
+            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint("FileContent", "RulesetPath"));
+            Assertions.assertTrue(spectralException.getMessage().contains("Execution of Spectral failed"));
         }
     }
 }

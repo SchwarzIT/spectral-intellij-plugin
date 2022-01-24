@@ -17,4 +17,8 @@ public enum Config {
     public @NotNull String DEFAULT_INCLUDED_FILES_PATTERN() {
         return "**.json";
     }
+
+    public String ERROR_REPORTING_URL() {
+        return "https://github.com/stoplightio/spectral/issues/new"; // ToDo: use issue url of plugin open source repo
+    }
 }
