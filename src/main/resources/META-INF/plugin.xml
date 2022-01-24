@@ -1,11 +1,11 @@
 <idea-plugin>
     <id>com.schwarzit.spectral-intellij-plugin</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <name>Spectral OpenAPI Linter</name>
+    <vendor email="" url="https://gruppe.schwarz/">Schwarz IT KG</vendor>
 
+    <!-- ToDo: Improve description -->
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    This Plugin is the IntelliJ version of the existing one for VS Code
     ]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
@@ -13,7 +13,18 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <postStartupActivity implementation="com.schwarzit.spectralIntellijPlugin.SpectralStartupAction"/>
+
+        <externalAnnotator language="JSON"
+                           implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"/>
+
+        <projectService serviceImplementation="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState"/>
+        <projectConfigurable parentId="tools" displayName="Spectral"
+                             instance="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"
+                             id="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"/>
+
+        <notificationGroup id="Spectral" displayType="BALLOON" icon="SpectralIcons.SpectralLogo"/>
+        <errorHandler implementation="com.schwarzit.spectralIntellijPlugin.util.ErrorReportSubmitter"/>
     </extensions>
 
     <actions>
