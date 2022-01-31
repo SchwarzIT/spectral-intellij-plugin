@@ -17,7 +17,7 @@ class ProjectSettingsStateTest {
 
     @Test
     void testProjectSettingsDefault() {
-        PluginSettings defaultSettings = new PluginSettings(Config.Instance.DEFAULT_RULESET_URL(), Config.Instance.DEFAULT_INCLUDED_FILES_PATTERN());
+        PluginSettings defaultSettings = new PluginSettings(Config.Instance.DEFAULT_RULESET_NAME(), Config.Instance.DEFAULT_INCLUDED_FILES_PATTERN());
         assertEquals(defaultSettings, settings.getState());
     }
 

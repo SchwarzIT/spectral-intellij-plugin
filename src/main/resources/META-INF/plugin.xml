@@ -8,9 +8,12 @@
     This Plugin is the IntelliJ version of the existing one for VS Code
     ]]></description>
 
+    <idea-version since-build="203"/>
+
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.schwarzit.spectralIntellijPlugin.SpectralStartupAction"/>

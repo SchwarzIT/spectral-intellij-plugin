@@ -70,9 +70,7 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
             List<SpectralIssue> spectralIssues = spectralRunner.lint(fileContent, rulesetPath);
             spectralIssues.forEach(issue -> issue.setDocument(document));
             return spectralIssues;
-        } catch (TempFileException e) {
-            System.out.println(e.getMessage());
-        } catch (SpectralException e) {
+        } catch (SpectralException | TempFileException e) {
             notificationHandler.showNotification("Linting failed", e.getMessage(), NotificationType.WARNING, project);
         }
 

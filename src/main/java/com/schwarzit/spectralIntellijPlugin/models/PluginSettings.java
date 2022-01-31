@@ -1,7 +1,11 @@
 package com.schwarzit.spectralIntellijPlugin.models;
 
+import com.intellij.notification.NotificationType;
+import com.schwarzit.spectralIntellijPlugin.StorageManager;
 import com.schwarzit.spectralIntellijPlugin.config.Config;
+import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
 import com.schwarzit.spectralIntellijPlugin.settings.BaseSettingsComponent;
+import com.schwarzit.spectralIntellijPlugin.util.NotificationHandler;
 
 import java.util.Objects;
 
@@ -24,7 +28,11 @@ public class PluginSettings {
 
     public void setRuleset(String ruleset) {
         if (ruleset.isBlank()) {
-            this.ruleset = Config.Instance.DEFAULT_RULESET_URL();
+            try {
+                this.ruleset = StorageManager.getInstance().getStoragePath().resolve(Config.Instance.DEFAULT_RULESET_NAME()).toAbsolutePath().toString();
+            } catch (SpectralException e) {
+                NotificationHandler.getInstance().showNotification("Failed to resolve path of default Ruleset", Config.Instance.DEFAULT_RULESET_NAME(), NotificationType.ERROR);
+            }
         } else {
             this.ruleset = ruleset;
         }

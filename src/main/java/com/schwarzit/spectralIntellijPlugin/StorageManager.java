@@ -2,47 +2,33 @@ package com.schwarzit.spectralIntellijPlugin;
 
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManagerCore;
-import com.intellij.notification.NotificationType;
 import com.intellij.openapi.extensions.PluginId;
 import com.schwarzit.spectralIntellijPlugin.config.Config;
-import com.schwarzit.spectralIntellijPlugin.exceptions.DownloadFailedException;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
-import com.schwarzit.spectralIntellijPlugin.util.FileDownloader;
-import com.schwarzit.spectralIntellijPlugin.util.NotificationHandler;
 import org.apache.commons.io.FileUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.Objects;
 
 public class StorageManager {
     private static StorageManager instance;
-    private final NotificationHandler notificationHandler;
-    protected String EXECUTABLE_PATH;
+    protected Path EXECUTABLE_PATH;
     protected Path STORAGE_PATH;
 
     private StorageManager() throws SpectralException {
-        this.notificationHandler = NotificationHandler.getInstance();
-        initialize();
-    }
-
-    public StorageManager(NotificationHandler notificationHandler) throws SpectralException {
-        this.notificationHandler = notificationHandler;
         initialize();
     }
 
     private void initialize() throws SpectralException {
         String os = System.getProperty("os.name");
-        String spectralExecutablesPath = "spectralExecutables/";
-
-        this.EXECUTABLE_PATH = calculateExecutablePath(os, spectralExecutablesPath);
 
         try {
             this.STORAGE_PATH = calculateStoragePath();
+            Path spectralExecutablesPath = getStoragePath().resolve("spectralExecutables");
+            this.EXECUTABLE_PATH = spectralExecutablesPath.resolve(calculateExecutableName(os));
         } catch (NullPointerException e) {
             throw new SpectralException("Failed to get the installation path of the plugin", e);
         }
@@ -54,13 +40,13 @@ public class StorageManager {
         return Objects.requireNonNull(plugin).getPluginPath().toAbsolutePath();
     }
 
-    private String calculateExecutablePath(String os, String spectralExecutablesPath) throws SpectralException {
+    private String calculateExecutableName(String os) throws SpectralException {
         String lowerCaseOS = os.toLowerCase();
 
-        if (lowerCaseOS.contains("win")) return spectralExecutablesPath + "spectral-windows.exe";
-        else if (lowerCaseOS.contains("mac")) return spectralExecutablesPath + "spectral-macos";
+        if (lowerCaseOS.contains("win")) return "spectral-windows.exe";
+        else if (lowerCaseOS.contains("mac")) return "spectral-macos";
         else if (lowerCaseOS.contains("nix") || lowerCaseOS.contains("nux") || lowerCaseOS.contains("aix"))
-            return spectralExecutablesPath + "spectral-linux";
+            return "spectral-linux";
 
         throw new SpectralException("Unable to identify matching binary for operating system: " + os);
     }
@@ -71,7 +57,9 @@ public class StorageManager {
 
     public void installSpectralBinary() throws SpectralException {
         File executableFile = getSpectralExecutable();
-        InputStream executableStream = StorageManager.class.getResourceAsStream("/" + getExecutablePath());
+        if (executableFile.exists()) return;
+
+        InputStream executableStream = StorageManager.class.getResourceAsStream("/spectralExecutables/" + calculateExecutableName(System.getProperty("os.name")));
 
         try {
             FileUtils.copyInputStreamToFile(Objects.requireNonNull(executableStream), executableFile);
@@ -83,32 +71,25 @@ public class StorageManager {
         }
     }
 
-    public File getSpectralExecutable() {
-        return STORAGE_PATH.resolve(EXECUTABLE_PATH).toFile();
+    public void installDefaultRuleset() throws SpectralException {
+        File defaultRuleset = getDefaultRulesetPath().toFile();
+        if (defaultRuleset.exists()) return;
+
+        InputStream resourceAsStream = StorageManager.class.getResourceAsStream("/" + Config.Instance.DEFAULT_RULESET_NAME());
+
+        try {
+            FileUtils.copyInputStreamToFile(Objects.requireNonNull(resourceAsStream), defaultRuleset);
+        } catch (IOException e) {
+            throw new SpectralException("Unable to unpack default ruleset to: " + "<a href= \"" + defaultRuleset.getAbsolutePath() + "\">" + defaultRuleset.getAbsolutePath() + "</a>");
+        }
     }
 
-    public String getExecutablePath() {
-        return EXECUTABLE_PATH;
+    public File getSpectralExecutable() {
+        return EXECUTABLE_PATH.toFile();
     }
 
     public Path getDefaultRulesetPath() {
         return STORAGE_PATH.resolve(Config.Instance.DEFAULT_RULESET_NAME());
-    }
-
-    public void downloadRuleset(@NotNull URL url, @NotNull Path destination) {
-        try {
-            FileDownloader.downloadFile(url, destination.toString());
-        } catch (DownloadFailedException e) {
-            boolean defaultRulesetExists = getDefaultRulesetPath().toFile().exists();
-            String content = "<p>Unable to download default ruleset from:</p><a href=\"" + e.getURL() + "\">" + e.getURL() + "</a>";
-            if (defaultRulesetExists) {
-                content += "<br>Using previously downloaded version, the Rules might be out of date.";
-                notificationHandler.showNotification("Ruleset download failed", content, NotificationType.WARNING);
-            } else {
-                notificationHandler.showNotification("Ruleset download failed", content, NotificationType.ERROR);
-                throw new RuntimeException("Initial ruleset download failed", e);
-            }
-        }
     }
 
     public static StorageManager getInstance() throws SpectralException {

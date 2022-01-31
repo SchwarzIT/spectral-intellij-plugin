@@ -20,16 +20,15 @@ import java.util.List;
 public class SpectralRunner {
     private final StorageManager storageManager;
 
-    public SpectralRunner(StorageManager storageManager) throws SpectralException {
+    public SpectralRunner(StorageManager storageManager) {
         this.storageManager = storageManager;
-        this.storageManager.installSpectralBinary();
     }
 
     public List<SpectralIssue> lint(String fileContent, String rulesetPath) throws TempFileException, SpectralException {
         // It's necessary to create a temp file with the content of the virtual file, since the latest changes may not have been written to the actual file on disk
         Path tempFile = createTempFile(fileContent);
 
-        GeneralCommandLine cli = new GeneralCommandLine(storageManager.getExecutablePath());
+        GeneralCommandLine cli = new GeneralCommandLine(storageManager.getSpectralExecutable().getAbsolutePath());
         cli.setWorkDirectory(storageManager.getStoragePath().toString());
         cli.addParameters("lint", "--format", "json", "--ruleset", rulesetPath, tempFile.toAbsolutePath().toString());
 

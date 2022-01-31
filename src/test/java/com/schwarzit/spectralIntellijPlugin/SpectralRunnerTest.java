@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import static org.mockito.Mockito.when;
 
 class SpectralRunnerTest {
     private SpectralRunner spectralRunner;
-    private StorageManager mockStorageManager;
 
     private final String spectralOutput = "[\n" +
             "\t{\n" +
@@ -49,16 +49,19 @@ class SpectralRunnerTest {
             "]";
 
     @BeforeEach
-    void setUp() throws SpectralException {
-        mockStorageManager = mock(StorageManager.class);
+    void setUp() {
+        StorageManager mockStorageManager = mock(StorageManager.class);
+
+        File mockFile = mock(File.class);
+        when(mockFile.getAbsolutePath()).thenReturn("/");
+        when(mockStorageManager.getSpectralExecutable()).thenReturn(mockFile);
+        when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
+
         spectralRunner = new SpectralRunner(mockStorageManager);
     }
 
     @Test
     void testLint() throws SpectralException, TempFileException {
-        when(mockStorageManager.getExecutablePath()).thenReturn("spectral");
-        when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
-
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput);
 
@@ -78,9 +81,6 @@ class SpectralRunnerTest {
 
     @Test
     void testLintWithExecutionError() {
-        when(mockStorageManager.getExecutablePath()).thenReturn("spectral");
-        when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
-
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenThrow(new ExecutionException("Execution failed"));
             SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint("FileContent", "RulesetPath"));
@@ -90,9 +90,6 @@ class SpectralRunnerTest {
 
     @Test
     void testLintWithSubstringError() {
-        when(mockStorageManager.getExecutablePath()).thenReturn("spectral");
-        when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
-
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput.substring(0, spectralOutput.lastIndexOf(']')));
 
@@ -103,9 +100,6 @@ class SpectralRunnerTest {
 
     @Test
     void testLintWithParsingError() {
-        when(mockStorageManager.getExecutablePath()).thenReturn("spectral");
-        when(mockStorageManager.getStoragePath()).thenReturn(Path.of("/storage"));
-
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput.replace("\"", ""));
 

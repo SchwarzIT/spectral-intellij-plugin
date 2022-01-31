@@ -21,8 +21,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -95,21 +93,6 @@ class SpectralExternalAnnotatorTest {
 
         assertEquals(issues, spectralIssues);
         verify(issue, times(1)).setDocument(any());
-    }
-
-    @Test
-    void testDoAnnotateTempFileException() throws SpectralException, TempFileException {
-        PsiFile psiFileMock = mock(PsiFile.class);
-        when(psiFileMock.getText()).thenReturn("fileContent");
-        when(psiFileMock.getViewProvider()).thenReturn(mock(FileViewProvider.class));
-        when(spectralRunnerMock.lint(any(), any())).thenThrow(new TempFileException("TempFile exception"));
-
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        List<SpectralIssue> spectralIssues = spectralExternalAnnotator.doAnnotate(psiFileMock);
-
-        assertEquals(Collections.emptyList(), spectralIssues);
-        assertEquals("TempFile exception", out.toString().trim());
     }
 
     @Test

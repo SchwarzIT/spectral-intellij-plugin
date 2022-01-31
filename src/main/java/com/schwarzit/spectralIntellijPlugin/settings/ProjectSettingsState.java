@@ -15,7 +15,7 @@ public class ProjectSettingsState extends BaseSettingsState {
     protected static ProjectSettingsState instance;
 
     public ProjectSettingsState() {
-        super(new PluginSettings(Config.Instance.DEFAULT_RULESET_URL(), Config.Instance.DEFAULT_INCLUDED_FILES_PATTERN()));
+        super(new PluginSettings(Config.Instance.DEFAULT_RULESET_NAME(), Config.Instance.DEFAULT_INCLUDED_FILES_PATTERN()));
     }
 
     public static void initialize(Project project) {

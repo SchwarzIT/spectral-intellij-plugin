@@ -8,7 +8,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
@@ -22,22 +21,24 @@ class SpectralStartupActionTest {
     }
 
     @Test
-    void runActivity() {
+    void runActivity() throws SpectralException {
         try (MockedStatic<StorageManager> storageManagerMockedStatic = Mockito.mockStatic(StorageManager.class)) {
             StorageManager storageManagerMock = mock(StorageManager.class);
             storageManagerMockedStatic.when(StorageManager::getInstance).thenReturn(storageManagerMock);
-            doNothing().when(storageManagerMock).downloadRuleset(any(), any());
+            doNothing().when(storageManagerMock).installSpectralBinary();
+            doNothing().when(storageManagerMock).installDefaultRuleset();
 
             spectralStartupAction.runActivity(mock(Project.class));
         }
     }
 
     @Test
-    void runActivityWithSpectralException() {
+    void runActivityWithSpectralException() throws SpectralException {
         try (MockedStatic<StorageManager> storageManagerMockedStatic = Mockito.mockStatic(StorageManager.class)) {
             StorageManager storageManagerMock = mock(StorageManager.class);
             storageManagerMockedStatic.when(StorageManager::getInstance).thenThrow(new SpectralException("Test"));
-            doNothing().when(storageManagerMock).downloadRuleset(any(), any());
+            doNothing().when(storageManagerMock).installSpectralBinary();
+            doNothing().when(storageManagerMock).installDefaultRuleset();
 
             assertThrows(RuntimeException.class, () -> spectralStartupAction.runActivity(mock(Project.class)));
         }
