@@ -23,6 +23,7 @@ public class ProjectSettingsState extends BaseSettingsState {
     }
 
     public static ProjectSettingsState getInstance() throws ProjectSettingsException {
+        // ToDo: Try using ApplicationManager.getApplication().getService(AppSettingsState.class); to instantiate singleton
         if (instance == null) {
             throw new ProjectSettingsException("Instance of ProjectSettingsState was not initialized before first usage");
         }
