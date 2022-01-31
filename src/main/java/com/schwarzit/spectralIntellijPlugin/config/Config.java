@@ -15,6 +15,6 @@ public enum Config {
     }
 
     public String ERROR_REPORTING_URL() {
-        return "https://github.com/stoplightio/spectral/issues/new"; // ToDo: use issue url of plugin open source repo
+        return "https://github.com/SchwarzIT/spectral-intellij-plugin/issues/new";
     }
 }
