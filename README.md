@@ -21,7 +21,12 @@ It supports all Jetbrains IDEs starting at version 2020.3.
 
 ### From the Jetbrains Marketplace
 
-Coming soon...
+The latest version of the plugin is available on the [Jetbrains marketplace](https://plugins.jetbrains.com/plugin/18520-spectral). To install it you can follow these
+steps:
+
+1. Open your Jetbrains IDE
+2. Go to Preferences -> Plugins and search for "Spectral"
+3. Click install on the first result
 
 ### Building from source
 

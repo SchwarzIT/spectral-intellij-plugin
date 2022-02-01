@@ -1,8 +1,7 @@
-<!-- ToDo: add url once open sourced -> <idea-plugin url="https://github.com/SchwarzIT/spectral-intellij-plugin"> -->
-<idea-plugin>
+<idea-plugin url="https://github.com/SchwarzIT/spectral-intellij-plugin">
     <id>com.schwarzit.spectral-intellij-plugin</id>
     <name>Spectral</name>
-    <vendor>Schwarz IT KG</vendor>
+    <vendor>SchwarzIT</vendor>
 
     <description><![CDATA[
     This plugin is a wrapper for the tool <a href="https://github.com/stoplightio/spectral">Spectral</a>, a linter for OpenApi schemas.
