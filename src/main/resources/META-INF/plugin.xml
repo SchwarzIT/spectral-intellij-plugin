@@ -49,6 +49,12 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>1.0.1</b> <em>(2022-02-01)</em>
+                <ul>
+                    <li>Changed Vendor to not contains spaces, so it can be used as the uid of an Jetbrains organization</li>
+                    <li>Added the link to the open source repository of the plugin</li>
+                </ul>
+            </li>
             <li><b>1.0.0</b> <em>(2022-01-31)</em>
                 <ul>
                     <li>Initial release</li>
