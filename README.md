@@ -1,5 +1,7 @@
 # Spectral IntelliJ Plugin
 
+[![SIT](https://img.shields.io/badge/SIT-awesome-blueviolet.svg)](https://jobs.schwarz)
+
 This plugin is a wrapper for the tool [Spectral](https://github.com/stoplightio/spectral), a linter for OpenApi schemas.
 It supports all Jetbrains IDEs starting at version 2020.3.
 
