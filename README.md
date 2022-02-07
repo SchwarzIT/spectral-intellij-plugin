@@ -7,17 +7,22 @@ It supports all Jetbrains IDEs starting at version 2020.3.
 
 ## Features
 
-- Automatic linting of your OpenApi specifications and highlighting in your editor
-- Specify your own [ruleset](https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0NA-rulesets) in the plugins settings,
-  under Preferences -> Tools -> Spectral -> Ruleset. There you can select a file on your local machine or just paste the
+### Automatic Linting
+Automatic linting of your OpenApi specifications and highlighting in your editor
+
+### Customizable Ruleset
+Specify your own [ruleset](https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0NA-rulesets) in the plugins settings,
+  under `Preferences -> Tools -> Spectral -> Ruleset`. There you can select a file on your local machine or just paste the
   URL of a ruleset available on the internet e.g.:
   [Schwarz IT API linting rules](https://github.com/SchwarzIT/api-linter-rules)
 
   The default ruleset comes bundled with the plugin and uses Spectrals
   recommended [OAS](https://meta.stoplight.io/docs/spectral/ZG9jOjExNw-open-api-rules) ruleset.
-- Select the files that will be linted. By default, every JSON file will be linted by the plugin when it's opened. You
-  can adjust this in the Settings under Preferences -> Tools -> Spectral -> Included files. Default is the glob
-  pattern `**.json`, you could for example change it to `**/openapi/*.json`
+### Customizable File Matching pattern
+The customization of file matching is possible under `Preferences -> Tools -> Spectral -> Included files`. By 
+default, every JSON file will be linted with default pattern `**.json` by the plugin, when json file is opened. You 
+can adjust this to `**/openapi/*.json`, so that some other json files, such as `composer.json`, `package.json`, will
+not be included and linted automatically.
 
 ## Installation
 
