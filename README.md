@@ -21,7 +21,8 @@ Specify your own [ruleset](https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0N
 ### Customizable File Matching pattern
 The customization of file matching is possible under `Preferences -> Tools -> Spectral -> Included files`. By 
 default, every JSON file will be linted with default pattern `**.json` by the plugin, when json file is opened. You 
-can adjust this to `**/openapi/*.json`, so that some other json files, such as `composer.json`, `package.json`, will
+can adjust this to `**/openapi/*.json`(e.g. matches openapi.json), so that some other json files, such as `composer.
+json`, `package.json`, will
 not be included and linted automatically.
 
 ## Installation
