@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.schwarzit'
-version '1.0.1'
+version '1.0.2'
 
 repositories {
     mavenCentral()
@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'commons-io:commons-io:2.11.0'
+
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
@@ -24,6 +25,9 @@ dependencies {
 intellij {
     version = '2020.3'
     updateSinceUntilBuild = false
+    plugins = [
+            'org.jetbrains.plugins.yaml'
+    ]
 }
 test {
     useJUnitPlatform()

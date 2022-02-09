@@ -33,6 +33,8 @@
 
         <externalAnnotator language="JSON"
                            implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"/>
+        <externalAnnotator language="yaml"
+                           implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"/>
 
         <projectService serviceImplementation="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState"/>
         <projectConfigurable parentId="tools" displayName="Spectral"
