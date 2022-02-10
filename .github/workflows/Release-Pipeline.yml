@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-      - pipeline-setup # ToDo: Remove before merge
 
 jobs:
   build:
+    environment: production
     runs-on: ubuntu-latest
 
     steps:
@@ -19,9 +19,10 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Build with Gradle
+      - name: Publish Plugin to Jetbrains Marketplace
         uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
         env:
-          MARKETPLACE_TOKEN: ${{ secrets.JetbrainsPluginSpectralMarketplaceToken }}
+          MARKETPLACE_TOKEN: ${{ secrets.JETBRAINSPLUGINSPECTRALMARKETPLACETOKEN }}
+          SIGNING_PASSWORD: ${{ secrets.JETBRAINS_MARKETPLACE_CERTIFICATE_PASSWORD }}
         with:
           arguments: publishPlugin

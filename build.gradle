@@ -45,6 +45,11 @@ tasks {
                 "WS-2020.3.1"
         ]
     }
+    signPlugin {
+        certificateChain = rootProject.file("certs/chain.crt").text.trim()
+        privateKey = rootProject.file("certs/private.pem").text.trim()
+        password = System.getenv("SIGNING_PASSWORD")
+    }
     publishPlugin {
         token = System.getenv("MARKETPLACE_TOKEN")
     }
