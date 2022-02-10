@@ -45,4 +45,7 @@ tasks {
                 "WS-2020.3.1"
         ]
     }
+    publishPlugin {
+        token = System.getenv("MARKETPLACE_TOKEN")
+    }
 }
