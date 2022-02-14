@@ -60,7 +60,7 @@ public class SpectralRunner {
     private Path createTempFile(String fileContent) throws TempFileException {
         Path tempFile;
         try {
-            tempFile = Files.createTempFile(null, ".json");
+            tempFile = Files.createTempFile(null, null);
         } catch (IOException e) {
             throw new TempFileException("Unable to create temp file");
         }
