@@ -51,6 +51,11 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>1.0.2</b> <em>(2022-02-14)</em>
+                <ul>
+                    <li>Added support for linting yaml files</li>
+                </ul>
+            </li>
             <li><b>1.0.1</b> <em>(2022-02-01)</em>
                 <ul>
                     <li>Changed Vendor to not contains spaces, so it can be used as the uid of an Jetbrains organization</li>
