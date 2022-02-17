@@ -51,23 +51,24 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li><b>1.0.3</b> <em>(2022-02-17)</em>
+            <li><b>1.0.3</b> (2022-02-17)
                 <ul>
                     <li>Added support for specifying multiple glob patterns inside included files by splitting them with a semicolon e.g.: "**.json;**.yml"</li>
+                    <li>Improved debugging by writing the error message coming from spectral to the event log</li>
                 </ul>
             </li>
-            <li><b>1.0.2</b> <em>(2022-02-14)</em>
+            <li><b>1.0.2</b> (2022-02-14)
                 <ul>
                     <li>Added support for linting yaml files</li>
                 </ul>
             </li>
-            <li><b>1.0.1</b> <em>(2022-02-01)</em>
+            <li><b>1.0.1</b> (2022-02-01)
                 <ul>
                     <li>Changed Vendor to not contains spaces, so it can be used as the uid of an Jetbrains organization</li>
                     <li>Added the link to the open source repository of the plugin</li>
                 </ul>
             </li>
-            <li><b>1.0.0</b> <em>(2022-01-31)</em>
+            <li><b>1.0.0</b> (2022-01-31)
                 <ul>
                     <li>Initial release</li>
                 </ul>

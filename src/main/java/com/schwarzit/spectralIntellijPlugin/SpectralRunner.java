@@ -30,17 +30,19 @@ public class SpectralRunner {
 
         GeneralCommandLine cli = new GeneralCommandLine(storageManager.getSpectralExecutable().getAbsolutePath());
         cli.setWorkDirectory(storageManager.getStoragePath().toString());
+        cli.setRedirectErrorStream(true);
         cli.addParameters("lint", "--format", "json", "--ruleset", rulesetPath, tempFile.toAbsolutePath().toString());
 
+        String processOutput = "";
         try {
-            String processOutput = ScriptRunnerUtil.getProcessOutput(cli);
+            processOutput = ScriptRunnerUtil.getProcessOutput(cli);
             // Removing everything before the first '[' and after the last ']' since spectral outputs additional text if no issues were found
             processOutput = processOutput.substring(processOutput.indexOf('['), processOutput.lastIndexOf(']') + 1);
 
             SpectralIssue[] issues = parseSpectralResponse(processOutput);
             return List.of(issues);
         } catch (ExecutionException | JsonSyntaxException | IndexOutOfBoundsException e) {
-            throw new SpectralException("Execution of Spectral failed using the following command: \"" + cli.getCommandLineString() + "\"", e);
+            throw new SpectralException("Execution of Spectral failed using the following command: \"" + cli.getCommandLineString() + "\"\nError Message:\n" + processOutput, e);
         } finally {
             try {
                 Files.delete(tempFile);
