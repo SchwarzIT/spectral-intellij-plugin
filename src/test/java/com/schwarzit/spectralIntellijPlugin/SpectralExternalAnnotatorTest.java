@@ -52,7 +52,15 @@ class SpectralExternalAnnotatorTest {
                 Arguments.of("*.json", "openapi.json", true),
                 Arguments.of("*/*.json", "openapi/openapi.json", true),
                 Arguments.of("**/*.json", "/openapi.json", true),
-                Arguments.of("**/*.json", "/openapi/openapi.yml", false)
+                Arguments.of("**/*.json", "/openapi/openapi.yml", false),
+                Arguments.of("**test.*", "/openapi/test.yml", true),
+                Arguments.of("**.{json,yml}", "openapi.yml", true),
+                Arguments.of("**.{json,yml}", "openapi.json", true),
+                Arguments.of("**.{json,y*ml}", "openapi.yaml", true),
+                Arguments.of("**.{json,y*ml}", "openapi.yml", true),
+                Arguments.of("**.json;**.yml", "openapi.json", true),
+                Arguments.of("**.json; **.yml", "openapi.yml", true),
+                Arguments.of("**.json; **.yml", "openapi.txt", false)
         );
     }
 
