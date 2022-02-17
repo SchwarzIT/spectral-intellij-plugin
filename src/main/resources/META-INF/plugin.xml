@@ -51,6 +51,11 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>1.0.3</b> <em>(2022-02-17)</em>
+                <ul>
+                    <li>Added support for specifying multiple glob patterns inside included files by splitting them with a semicolon e.g.: "**.json;**.yml"</li>
+                </ul>
+            </li>
             <li><b>1.0.2</b> <em>(2022-02-14)</em>
                 <ul>
                     <li>Added support for linting yaml files</li>
