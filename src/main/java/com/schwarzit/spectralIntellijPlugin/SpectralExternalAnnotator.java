@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,9 +52,12 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
     @Override
     public @Nullable PsiFile collectInformation(@NotNull PsiFile file) {
         @NotNull Path path = file.getVirtualFile().toNioPath();
-        PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:" + projectSettingsState.getIncludedFiles());
+        String[] globPatterns = projectSettingsState.getIncludedFiles().split("[;]");
 
-        boolean matches = pathMatcher.matches(path);
+        boolean matches = Arrays.stream(globPatterns).map(String::trim).anyMatch(pattern -> {
+            PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+            return pathMatcher.matches(path);
+        });
         if (!matches) return null;
 
         return file;
