@@ -6,7 +6,6 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.ScriptRunnerUtil;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
-import com.schwarzit.spectralIntellijPlugin.exceptions.TempFileException;
 import com.schwarzit.spectralIntellijPlugin.models.SpectralIssue;
 
 import java.nio.file.Path;
@@ -19,7 +18,7 @@ public class SpectralRunner {
         this.storageManager = storageManager;
     }
 
-    public List<SpectralIssue> lint(Path fileContent, String rulesetPath) throws TempFileException, SpectralException {
+    public List<SpectralIssue> lint(Path fileContent, String rulesetPath) throws SpectralException {
         GeneralCommandLine cli = new GeneralCommandLine(storageManager.getSpectralExecutable().getAbsolutePath());
         cli.setWorkDirectory(storageManager.getStoragePath().toString());
         cli.setRedirectErrorStream(true);

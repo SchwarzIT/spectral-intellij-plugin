@@ -9,7 +9,6 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiFile;
 import com.schwarzit.spectralIntellijPlugin.exceptions.ProjectSettingsException;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
-import com.schwarzit.spectralIntellijPlugin.exceptions.TempFileException;
 import com.schwarzit.spectralIntellijPlugin.models.SpectralIssue;
 import com.schwarzit.spectralIntellijPlugin.settings.BaseSettingsState;
 import com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState;
@@ -78,7 +77,7 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
             spectralIssues.forEach(issue -> issue.setDocument(document));
 
             return spectralIssues;
-        } catch (SpectralException | TempFileException e) {
+        } catch (SpectralException e) {
             notificationHandler.showNotification("Linting failed", e.getMessage(), NotificationType.WARNING, project);
         }
 

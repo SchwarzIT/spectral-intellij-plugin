@@ -10,7 +10,6 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiFile;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
-import com.schwarzit.spectralIntellijPlugin.exceptions.TempFileException;
 import com.schwarzit.spectralIntellijPlugin.models.ErrorPosition;
 import com.schwarzit.spectralIntellijPlugin.models.ErrorRange;
 import com.schwarzit.spectralIntellijPlugin.models.SpectralIssue;
@@ -85,7 +84,7 @@ class SpectralExternalAnnotatorTest {
     }
 
     @Test
-    void testDoAnnotate() throws SpectralException, TempFileException {
+    void testDoAnnotate() throws SpectralException {
         SpectralIssue issue = spy(new SpectralIssue("code", new String[]{"path"}, "message", 0, "source",
                 new ErrorRange(
                         new ErrorPosition(0, 0),
@@ -112,7 +111,7 @@ class SpectralExternalAnnotatorTest {
     }
 
     @Test
-    void testDoAnnotateSpectralException() throws SpectralException, TempFileException {
+    void testDoAnnotateSpectralException() throws SpectralException {
         PsiFile psiFileMock = mock(PsiFile.class);
         VirtualFile virtualFileMock = mock(VirtualFile.class);
         when(psiFileMock.getVirtualFile()).thenReturn(virtualFileMock);

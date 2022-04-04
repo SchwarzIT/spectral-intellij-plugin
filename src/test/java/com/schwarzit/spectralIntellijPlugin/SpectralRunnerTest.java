@@ -4,7 +4,6 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.ScriptRunnerUtil;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
-import com.schwarzit.spectralIntellijPlugin.exceptions.TempFileException;
 import com.schwarzit.spectralIntellijPlugin.models.ErrorPosition;
 import com.schwarzit.spectralIntellijPlugin.models.ErrorRange;
 import com.schwarzit.spectralIntellijPlugin.models.SpectralIssue;
@@ -61,7 +60,7 @@ class SpectralRunnerTest {
     }
 
     @Test
-    void testLint() throws SpectralException, TempFileException {
+    void testLint() throws SpectralException {
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput);
 
