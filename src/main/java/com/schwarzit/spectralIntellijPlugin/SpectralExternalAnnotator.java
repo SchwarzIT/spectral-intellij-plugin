@@ -5,6 +5,7 @@ import com.intellij.lang.annotation.ExternalAnnotator;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiFile;
 import com.schwarzit.spectralIntellijPlugin.exceptions.ProjectSettingsException;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
@@ -65,14 +66,17 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
 
     @Override
     public @Nullable List<SpectralIssue> doAnnotate(PsiFile file) {
-        String fileContent = file.getText();
+        Path filePath = file.getVirtualFile().toNioPath();
         Project project = file.getProject();
         Document document = file.getViewProvider().getDocument();
         String rulesetPath = projectSettingsState.getRuleset();
 
         try {
-            List<SpectralIssue> spectralIssues = spectralRunner.lint(fileContent, rulesetPath);
+            VirtualFileManager.getInstance().refreshWithoutFileWatcher(true);
+
+            List<SpectralIssue> spectralIssues = spectralRunner.lint(filePath, rulesetPath);
             spectralIssues.forEach(issue -> issue.setDocument(document));
+
             return spectralIssues;
         } catch (SpectralException | TempFileException e) {
             notificationHandler.showNotification("Linting failed", e.getMessage(), NotificationType.WARNING, project);
