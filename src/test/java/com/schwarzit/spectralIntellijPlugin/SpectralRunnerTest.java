@@ -4,7 +4,6 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.ScriptRunnerUtil;
 import com.schwarzit.spectralIntellijPlugin.exceptions.SpectralException;
-import com.schwarzit.spectralIntellijPlugin.exceptions.TempFileException;
 import com.schwarzit.spectralIntellijPlugin.models.ErrorPosition;
 import com.schwarzit.spectralIntellijPlugin.models.ErrorRange;
 import com.schwarzit.spectralIntellijPlugin.models.SpectralIssue;
@@ -61,11 +60,11 @@ class SpectralRunnerTest {
     }
 
     @Test
-    void testLint() throws SpectralException, TempFileException {
+    void testLint() throws SpectralException {
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput);
 
-            List<SpectralIssue> issues = spectralRunner.lint("FileContent", "RulesetPath");
+            List<SpectralIssue> issues = spectralRunner.lint(Path.of("FileContent"), "RulesetPath");
 
             Assertions.assertEquals(1, issues.size());
             SpectralIssue issue = issues.get(0);
@@ -83,7 +82,7 @@ class SpectralRunnerTest {
     void testLintWithExecutionError() {
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenThrow(new ExecutionException("Execution failed"));
-            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint("FileContent", "RulesetPath"));
+            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint(Path.of("FileContent"), "RulesetPath"));
             Assertions.assertTrue(spectralException.getMessage().contains("Execution of Spectral failed"));
         }
     }
@@ -93,7 +92,7 @@ class SpectralRunnerTest {
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput.substring(0, spectralOutput.lastIndexOf(']')));
 
-            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint("FileContent", "RulesetPath"));
+            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint(Path.of("FileContent"), "RulesetPath"));
             Assertions.assertTrue(spectralException.getMessage().contains("Execution of Spectral failed"));
         }
     }
@@ -103,7 +102,7 @@ class SpectralRunnerTest {
         try (MockedStatic<ScriptRunnerUtil> scriptRunnerUtilMock = Mockito.mockStatic(ScriptRunnerUtil.class)) {
             scriptRunnerUtilMock.when(() -> ScriptRunnerUtil.getProcessOutput(isA(GeneralCommandLine.class))).thenReturn(spectralOutput.replace("\"", ""));
 
-            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint("FileContent", "RulesetPath"));
+            SpectralException spectralException = Assertions.assertThrows(SpectralException.class, () -> spectralRunner.lint(Path.of("FileContent"), "RulesetPath"));
             Assertions.assertTrue(spectralException.getMessage().contains("Execution of Spectral failed"));
         }
     }
