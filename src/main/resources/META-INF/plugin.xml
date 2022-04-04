@@ -43,6 +43,8 @@
 
         <notificationGroup id="Spectral" displayType="BALLOON" icon="SpectralIcons.SpectralLogo"/>
         <errorHandler implementation="com.schwarzit.spectralIntellijPlugin.util.ErrorReportSubmitter"/>
+
+        <vfs.asyncListener implementation="com.schwarzit.spectralIntellijPlugin.FileListener"/>
     </extensions>
 
     <actions>
