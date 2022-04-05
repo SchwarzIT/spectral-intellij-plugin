@@ -145,7 +145,8 @@ class SpectralExternalAnnotatorTest {
 
         spectralExternalAnnotator.apply(psiFileMock, issues, annotationHolderMock);
 
-        verify(annotationHolderMock).newAnnotation(HighlightSeverity.ERROR, "Message");
+        //noinspection DialogTitleCapitalization
+        verify(annotationHolderMock).newAnnotation(HighlightSeverity.ERROR, "code: Message");
         verify(annotationBuilderMock).range(textRange);
         verify(annotationBuilderMock).create();
     }

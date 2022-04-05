@@ -88,7 +88,7 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
     public void apply(@NotNull PsiFile file, List<SpectralIssue> issues, @NotNull AnnotationHolder holder) {
         issues.forEach(issue -> holder.newAnnotation(
                                 mapSeverity(issue.getSeverity()),
-                                issue.getMessage()
+                                issue.getCode() + ": " + issue.getMessage()
                         )
                         .range(issue.getRange().getTextRange())
                         .create()
