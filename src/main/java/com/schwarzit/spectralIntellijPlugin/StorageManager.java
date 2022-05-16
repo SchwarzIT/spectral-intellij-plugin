@@ -57,7 +57,6 @@ public class StorageManager {
 
     public void installSpectralBinary() throws SpectralException {
         File executableFile = getSpectralExecutable();
-        if (executableFile.exists()) return;
 
         InputStream executableStream = StorageManager.class.getResourceAsStream("/spectralExecutables/" + calculateExecutableName(System.getProperty("os.name")));
 
