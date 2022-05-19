@@ -3,6 +3,7 @@ package com.schwarzit.spectralIntellijPlugin;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.ExternalAnnotator;
 import com.intellij.notification.NotificationType;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFileManager;
@@ -26,6 +27,8 @@ import java.util.List;
 import static com.schwarzit.spectralIntellijPlugin.models.SpectralIssue.mapSeverity;
 
 public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<SpectralIssue>> {
+    private final static Logger logger = Logger.getInstance("Spectral");
+
     private final SpectralRunner spectralRunner;
     private final BaseSettingsState projectSettingsState;
     private final NotificationHandler notificationHandler;
@@ -54,11 +57,15 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
         @NotNull Path path = file.getVirtualFile().toNioPath();
         String[] globPatterns = projectSettingsState.getIncludedFiles().split("[;]");
 
+        logger.debug("Matching " + path + " against the following glob patterns: " + Arrays.toString(globPatterns));
         boolean matches = Arrays.stream(globPatterns).map(String::trim).anyMatch(pattern -> {
             PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
             return pathMatcher.matches(path);
         });
-        if (!matches) return null;
+        if (!matches) {
+            logger.debug("File " + path + " did not match any of the glob patterns");
+            return null;
+        }
 
         return file;
     }
@@ -73,8 +80,12 @@ public class SpectralExternalAnnotator extends ExternalAnnotator<PsiFile, List<S
         try {
             VirtualFileManager.getInstance().refreshWithoutFileWatcher(true);
 
+            logger.info("Stated linting file: " + filePath);
+
             List<SpectralIssue> spectralIssues = spectralRunner.lint(filePath, rulesetPath);
             spectralIssues.forEach(issue -> issue.setDocument(document));
+
+            logger.info("Finished linting file: " + file.getVirtualFile().toNioPath());
 
             return spectralIssues;
         } catch (SpectralException e) {

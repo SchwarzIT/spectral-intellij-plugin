@@ -53,6 +53,11 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>1.0.7</b> (2022-05-19)
+                <ul>
+                    <li>Added logging for debugging. Now you can open the IDE logs under Help -> Show log in Finder/Explorer</li>
+                </ul>
+            </li>
             <li><b>1.0.6</b> (2022-05-16)
                 <ul>
                     <li>Updated spectral to v6.2.1</li>
