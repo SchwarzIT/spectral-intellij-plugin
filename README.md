@@ -41,3 +41,12 @@ steps:
 2. Run ./gradlew buildPlugin
 3. Install the generated archive under build/distributions/spectral-intellij-plugin*.zip in your IDE (
    See [Install plugin from disk](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk))
+
+## Debugging
+
+To debug the plugin you can open the IDE logs under Help -> Show log in Finder/Explorer. There you will find the logfile
+of your IDE containing detailed information about what the plugin is doing under the category "Spectral".
+
+If you need even more information, you can enable debug logging in your IDE by going to Help -> Diagnostic Tools ->
+Debug Log Settings. Just add a line containing "Spectral" in there and you will receive even more detailed information
+in the before mentioned logfile.
