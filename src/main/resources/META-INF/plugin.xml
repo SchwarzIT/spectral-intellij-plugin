@@ -53,6 +53,11 @@
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>1.0.8</b> (2022-09-27)
+                <ul>
+                    <li>Upgraded dependencies to support the latest IntelliJ versions</li>
+                </ul>
+            </li>
             <li><b>1.0.7</b> (2022-05-19)
                 <ul>
                     <li>Added logging for debugging. Now you can open the IDE logs under Help -> Show log in Finder/Explorer</li>
