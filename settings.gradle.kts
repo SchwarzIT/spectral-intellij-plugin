@@ -1,1 +1,1 @@
-rootProject.name = "jetbrains-plugin-template"
+rootProject.name = "Spectral"
