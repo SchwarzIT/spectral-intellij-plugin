@@ -1,100 +1,18 @@
-<idea-plugin url="https://github.com/SchwarzIT/spectral-intellij-plugin">
-    <id>com.schwarzit.spectral-intellij-plugin</id>
-    <name>Spectral</name>
-    <vendor>SchwarzIT</vendor>
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.github.markbrockhoff.jetbrainsplugintemplate</id>
+    <name>jetbrains-plugin-template Template</name>
+    <vendor>markbrockhoff</vendor>
 
-    <description><![CDATA[
-    This plugin is a wrapper for the tool <a href="https://github.com/stoplightio/spectral">Spectral</a>, a linter for OpenApi schemas.
-    It supports all Jetbrains IDEs starting at version 2020.3.<br>
-
-    <h2>Features:</h2>
-    <ul>
-        <li>Automatic linting of your OpenApi specifications and highlighting in your editor</li>
-        <li><p>Specify your own <a href="https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0NA-rulesets">ruleset</a> in the plugins settings, under Preferences -&gt; Tools -&gt; Spectral -&gt; Ruleset.
-            There you can select a file on your local machine or just paste the URL of a ruleset available on the internet e.g.:
-            <a href="https://github.com/SchwarzIT/api-linter-rules">Schwarz IT API linting rules</a></p>
-            <p>The default ruleset comes bundled with the plugin and uses Spectrals recommended <a href="https://meta.stoplight.io/docs/spectral/ZG9jOjExNw-open-api-rules">OAS</a> ruleset.</p>
-        </li>
-        <li>Select the files that will be linted. By default, every JSON file will be linted by the plugin when it&#39;s opened.
-            You can adjust this in the Settings under Preferences -&gt; Tools -&gt; Spectral -&gt; Included files. Default is the glob pattern <code>**.json</code>, you could for example change it to <code>**/openapi/*.json</code>
-        </li>
-    </ul>
-    ]]></description>
-
-    <idea-version since-build="203"/>
-
-    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
-         on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.lang</depends>
+
+    <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <postStartupActivity implementation="com.schwarzit.spectralIntellijPlugin.SpectralStartupAction"/>
-
-        <externalAnnotator language="JSON"
-                           implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"/>
-        <externalAnnotator language="yaml"
-                           implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"/>
-
-        <projectService serviceImplementation="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState"/>
-        <projectConfigurable parentId="tools" displayName="Spectral"
-                             instance="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"
-                             id="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"/>
-
-        <notificationGroup id="Spectral" displayType="BALLOON" icon="SpectralIcons.SpectralLogo"/>
-        <errorHandler implementation="com.schwarzit.spectralIntellijPlugin.util.ErrorReportSubmitter"/>
-
-        <vfs.asyncListener implementation="com.schwarzit.spectralIntellijPlugin.FileListener"/>
+        <toolWindow factoryClass="com.github.markbrockhoff.jetbrainsplugintemplate.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
     </extensions>
 
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
-
-    <change-notes><![CDATA[
-        <ul>
-            <li><b>1.0.7</b> (2022-05-19)
-                <ul>
-                    <li>Added logging for debugging. Now you can open the IDE logs under Help -> Show log in Finder/Explorer</li>
-                </ul>
-            </li>
-            <li><b>1.0.6</b> (2022-05-16)
-                <ul>
-                    <li>Updated spectral to v6.2.1</li>
-                </ul>
-            </li>
-            <li><b>1.0.5</b> (2022-04-04)
-                <ul>
-                    <li>Added hot reloading for local rule-sets</li>
-                </ul>
-            </li>
-            <li><b>1.0.4</b> (2022-04-04)
-                <ul>
-                    <li>Added support for linting OpenAPI specs referencing other files e.g. DTOs using a relative path</li>
-                </ul>
-            </li>
-            <li><b>1.0.3</b> (2022-02-17)
-                <ul>
-                    <li>Added support for specifying multiple glob patterns inside included files by splitting them with a semicolon e.g.: "**.json;**.yml"</li>
-                    <li>Improved debugging by writing the error message coming from spectral to the event log</li>
-                </ul>
-            </li>
-            <li><b>1.0.2</b> (2022-02-14)
-                <ul>
-                    <li>Added support for linting yaml files</li>
-                </ul>
-            </li>
-            <li><b>1.0.1</b> (2022-02-01)
-                <ul>
-                    <li>Changed Vendor to not contains spaces, so it can be used as the uid of an Jetbrains organization</li>
-                    <li>Added the link to the open source repository of the plugin</li>
-                </ul>
-            </li>
-            <li><b>1.0.0</b> (2022-01-31)
-                <ul>
-                    <li>Initial release</li>
-                </ul>
-            </li>
-        </ul>
-     ]]></change-notes>
+    <applicationListeners>
+        <listener class="com.github.markbrockhoff.jetbrainsplugintemplate.listeners.MyFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
+    </applicationListeners>
 </idea-plugin>

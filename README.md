@@ -1,52 +1,44 @@
-# Spectral IntelliJ Plugin
+# jetbrains-plugin-template
 
-[![SIT](https://img.shields.io/badge/SIT-awesome-blueviolet.svg)](https://jobs.schwarz)
+![Build](https://github.com/markbrockhoff/jetbrains-plugin-template/workflows/Build/badge.svg)
+[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
 
-This plugin is a wrapper for the tool [Spectral](https://github.com/stoplightio/spectral), a linter for OpenApi schemas.
-It supports all Jetbrains IDEs starting at version 2020.3.
+## Template ToDo list
+- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
+- [ ] Get familiar with the [template documentation][template].
+- [ ] Adjust the [pluginGroup](./gradle.properties), [plugin ID](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
+- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
+- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
+- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
+- [ ] Set the `PLUGIN_ID` in the above README badges.
+- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
+- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
+- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
-## Features
+<!-- Plugin description -->
+This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
 
-### Automatic Linting
-Automatic linting of your OpenApi specifications and highlighting in your editor
+This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
 
-### Customizable Ruleset
-Specify your own [ruleset](https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0NA-rulesets) in the plugins settings,
-  under `Preferences -> Tools -> Spectral -> Ruleset`. There you can select a file on your local machine or just paste the
-  URL of a ruleset available on the internet e.g.:
-  [Schwarz IT API linting rules](https://github.com/SchwarzIT/api-linter-rules)
-
-  The default ruleset comes bundled with the plugin and uses Spectrals
-  recommended [OAS](https://meta.stoplight.io/docs/spectral/ZG9jOjExNw-open-api-rules) ruleset.
-### Customizable File Matching pattern
-The customization of file matching is possible under `Preferences -> Tools -> Spectral -> Included files`. By 
-default, every JSON file will be linted with default pattern `**.json` by the plugin, when json file is opened. You 
-can adjust this to `**openapi*.json`(e.g. matches openapi.json), so that some other json files, 
-such as `composer. json`, `package.json`, will not be included and linted automatically.
+To keep everything working, do not remove `<!-- ... -->` sections. 
+<!-- Plugin description end -->
 
 ## Installation
 
-### From the Jetbrains Marketplace
+- Using IDE built-in plugin system:
+  
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "jetbrains-plugin-template"</kbd> >
+  <kbd>Install Plugin</kbd>
+  
+- Manually:
 
-The latest version of the plugin is available on the [Jetbrains marketplace](https://plugins.jetbrains.com/plugin/18520-spectral). To install it you can follow these
-steps:
+  Download the [latest release](https://github.com/markbrockhoff/jetbrains-plugin-template/releases/latest) and install it manually using
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
-1. Open your Jetbrains IDE
-2. Go to Preferences -> Plugins and search for "Spectral"
-3. Click install on the first result
 
-### Building from source
+---
+Plugin based on the [IntelliJ Platform Plugin Template][template].
 
-1. Checkout this repository
-2. Run ./gradlew buildPlugin
-3. Install the generated archive under build/distributions/spectral-intellij-plugin*.zip in your IDE (
-   See [Install plugin from disk](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk))
-
-## Debugging
-
-To debug the plugin you can open the IDE logs under Help -> Show log in Finder/Explorer. There you will find the logfile
-of your IDE containing detailed information about what the plugin is doing under the category "Spectral".
-
-If you need even more information, you can enable debug logging in your IDE by going to Help -> Diagnostic Tools ->
-Debug Log Settings. Just add a line containing "Spectral" in there and you will receive even more detailed information
-in the before mentioned logfile.
+[template]: https://github.com/JetBrains/intellij-platform-plugin-template
+[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
