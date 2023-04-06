@@ -1,4 +1,4 @@
-package com.github.markbrockhoff.jetbrainsplugintemplate.listeners
+package com.schwarzit.spectralIntellijPlugin.listeners
 
 import com.intellij.ide.FrameStateListener
 import com.intellij.openapi.diagnostic.thisLogger

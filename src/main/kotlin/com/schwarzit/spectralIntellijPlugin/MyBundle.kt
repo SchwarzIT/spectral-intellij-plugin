@@ -1,4 +1,4 @@
-package com.github.markbrockhoff.jetbrainsplugintemplate
+package com.schwarzit.spectralIntellijPlugin
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

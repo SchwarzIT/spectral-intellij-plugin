@@ -1,18 +1,18 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.markbrockhoff.jetbrainsplugintemplate</id>
-    <name>jetbrains-plugin-template Template</name>
-    <vendor>markbrockhoff</vendor>
+    <id>com.schwarzit.spectral-intellij-plugin</id>
+    <name>Spectral</name>
+    <vendor>SchwarzIT</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.markbrockhoff.jetbrainsplugintemplate.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow factoryClass="com.schwarzit.spectralIntellijPlugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.markbrockhoff.jetbrainsplugintemplate.listeners.MyFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
+        <listener class="com.schwarzit.spectralIntellijPlugin.listeners.MyFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
     </applicationListeners>
 </idea-plugin>

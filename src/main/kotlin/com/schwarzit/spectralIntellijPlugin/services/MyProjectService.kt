@@ -1,9 +1,9 @@
-package com.github.markbrockhoff.jetbrainsplugintemplate.services
+package com.schwarzit.spectralIntellijPlugin.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.github.markbrockhoff.jetbrainsplugintemplate.MyBundle
+import com.schwarzit.spectralIntellijPlugin.MyBundle
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {
