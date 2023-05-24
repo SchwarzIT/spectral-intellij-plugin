@@ -12,7 +12,7 @@ class SpectralOutputParser {
 
     @Throws(ParseException::class)
     fun parse(input: String): List<SpectralIssue> {
-        logger.info("Received output:\n$input")
+        logger.warn("Received output:\n$input")
         return emptyList()
     }
 }

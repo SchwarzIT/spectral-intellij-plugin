@@ -31,7 +31,12 @@ class SpectralRunner(project: Project) {
 
         return try {
             createCommand()
-                .withParameters("-")
+                .withParameters(
+                    "-r",
+                    "https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml"
+                )
+                .withParameters("-f", "json")
+                .withParameters("lint")
                 .withInput(tempFile)
                 .execute()
         } finally {
@@ -42,9 +47,7 @@ class SpectralRunner(project: Project) {
     }
 
     private fun createCommand(): GeneralCommandLine {
-        // ToDo: Use spectral cli
-        val command = GeneralCommandLine("echo").withCharset(StandardCharsets.UTF_8)
-        return command
+        return GeneralCommandLine("spectral").withCharset(StandardCharsets.UTF_8)
     }
 
     @Throws(SpectralException::class)
@@ -58,16 +61,14 @@ class SpectralRunner(project: Project) {
         val successExitCodes = (0..2).toList()
 
         if (output.exitCode !in successExitCodes) {
-            logger.debug("Spectral error output: ${output.stderr}")
+            logger.error("Spectral error output: ${output.stderr}")
             throw SpectralException("Spectral finished with exit code ${output.exitCode} but expected one of $successExitCodes\n${output.stderr}")
         }
 
         if (output.stderr.isNotBlank()) {
-            logger.debug("Spectral error output: ${output.stderr}")
+            logger.error("Spectral error output: ${output.stderr}")
             throw SpectralException("An unexpected error occurred:\n${output.stderr}")
         }
-
-        logger.debug("Spectral output: ${output.stdout}")
 
         try {
             return parser.parse(output.stdout)
