@@ -1,11 +1,7 @@
 package com.schwarzit.spectralIntellijPlugin
 
 import com.intellij.execution.configurations.GeneralCommandLine
-import com.intellij.execution.process.OSProcessHandler
-import com.intellij.execution.process.ProcessAdapter
-import com.intellij.execution.process.ProcessEvent
-import com.intellij.execution.process.ProcessOutput
-import com.intellij.execution.process.ProcessOutputType
+import com.intellij.execution.process.*
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.util.Key
 import java.time.Duration

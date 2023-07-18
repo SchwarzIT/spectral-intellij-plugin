@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets
 import java.text.ParseException
 import java.time.Duration
 import java.util.concurrent.ExecutionException
-import kotlin.jvm.Throws
 
 @Service
 class SpectralRunner(project: Project) {

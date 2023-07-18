@@ -1,18 +1,14 @@
 package com.schwarzit.spectralIntellijPlugin
 
 import com.intellij.openapi.components.Service
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.text.ParseException
-import kotlin.jvm.Throws
 
 @Service
 class SpectralOutputParser {
-    companion object {
-        val logger = getLogger()
-    }
-
     @Throws(ParseException::class)
     fun parse(input: String): List<SpectralIssue> {
-        logger.warn("Received output:\n$input")
-        return emptyList()
+        return Json.decodeFromString<List<SpectralIssue>>(input)
     }
 }
