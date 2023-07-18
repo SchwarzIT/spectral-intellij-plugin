@@ -29,7 +29,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>
         val computable = Computable { lintFile(editor) }
         val indicator = BackgroundableProcessIndicator(
             editor.project,
-            "Spectral: Analyzing OpenAPI spec...",
+            "Spectral: analyzing OpenAPI spec...",
             "Stop",
             "Stop file analysis",
             false
