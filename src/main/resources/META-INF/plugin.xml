@@ -9,15 +9,11 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.schwarzit.spectralIntellijPlugin.toolWindow.MyToolWindowFactory"
-                    id="MyToolWindow"/>
         <externalAnnotator language="JSON"
                            implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"
                            id="SpectralExternalAnnotator"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.schwarzit.spectralIntellijPlugin.listeners.MyFrameStateListener"
-                  topic="com.intellij.ide.FrameStateListener"/>
     </applicationListeners>
 </idea-plugin>
