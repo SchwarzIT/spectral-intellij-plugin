@@ -8,7 +8,7 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    kotlin("jvm") version "1.9.0"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.13.2"
     // Gradle Changelog Plugin
@@ -17,6 +17,8 @@ plugins {
     id("org.jetbrains.qodana") version "0.1.13"
     // Gradle Kover Plugin
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
+
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 group = properties("pluginGroup").get()
@@ -76,7 +78,7 @@ tasks {
             val start = "<!-- Plugin description -->"
             val end = "<!-- Plugin description end -->"
 
-            with (it.lines()) {
+            with(it.lines()) {
                 if (!containsAll(listOf(start, end))) {
                     throw GradleException("Plugin description section not found in README.md:\n$start ... $end")
                 }
@@ -119,6 +121,16 @@ tasks {
         // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels.set(properties("pluginVersion").map { listOf(it.split('-').getOrElse(1) { "default" }.split('.').first()) })
+        channels.set(properties("pluginVersion").map {
+            listOf(
+                it.split('-').getOrElse(1) { "default" }.split('.').first()
+            )
+        })
     }
+}
+
+dependencies {
+    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
 }
