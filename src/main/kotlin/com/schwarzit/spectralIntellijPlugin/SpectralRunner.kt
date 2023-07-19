@@ -25,6 +25,7 @@ class SpectralRunner(private val project: Project) {
 
     fun run(content: String): List<SpectralIssue> {
         val tempFile = try {
+            // It's necessary to write the content to be linted into a temp file as the linted content otherwise might be outdated
             File.createTempFile("spectral-intellij-input-", ".tmp").apply { writeText(content) }
         } catch (e: IOException) {
             throw SpectralException("Failed to create temporary file", e)
