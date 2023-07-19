@@ -69,6 +69,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>
             val issues = linter.run(editor.document.text)
             issues
         } catch (e: Throwable) {
+            logger.debug(e)
             emptyList()
         }
     }

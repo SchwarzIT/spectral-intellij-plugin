@@ -41,7 +41,7 @@ class SpectralRunner(private val project: Project) {
                 .execute()
         } finally {
             if (!tempFile.delete()) {
-                logger.warn("Failed to delete temporary file ${tempFile.canonicalPath}")
+                logger.debug("Failed to delete temporary file ${tempFile.canonicalPath}")
             }
         }
     }
@@ -61,12 +61,10 @@ class SpectralRunner(private val project: Project) {
         val successExitCodes = (0..2).toList()
 
         if (output.exitCode !in successExitCodes) {
-            logger.error("Spectral error output: ${output.stderr}")
             throw SpectralException("Spectral finished with exit code ${output.exitCode} but expected one of $successExitCodes\n${output.stderr}")
         }
 
         if (output.stderr.isNotBlank()) {
-            logger.error("Spectral error output: ${output.stderr}")
             throw SpectralException("An unexpected error occurred:\n${output.stderr}")
         }
 
