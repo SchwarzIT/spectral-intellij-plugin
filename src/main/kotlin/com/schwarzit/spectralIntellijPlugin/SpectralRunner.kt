@@ -20,6 +20,7 @@ class SpectralRunner(project: Project) {
 
     private val executor = project.service<CommandLineExecutor>()
     private val parser = project.service<SpectralOutputParser>()
+    private val appSettings = service<ApplicationSettingsState>()
 
     fun run(content: String): List<SpectralIssue> {
         val tempFile = try {
@@ -30,10 +31,7 @@ class SpectralRunner(project: Project) {
 
         return try {
             createCommand()
-                .withParameters(
-                    "-r",
-                    "https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml"
-                )
+                .withParameters("-r", appSettings.ruleset)
                 .withParameters("-f", "json")
                 .withParameters("lint")
                 .withInput(tempFile)

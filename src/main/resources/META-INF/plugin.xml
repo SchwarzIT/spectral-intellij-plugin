@@ -6,14 +6,15 @@
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
         <externalAnnotator language="JSON"
                            implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"
                            id="SpectralExternalAnnotator"/>
-    </extensions>
 
-    <applicationListeners>
-    </applicationListeners>
+        <applicationConfigurable parentId="tools"
+                                 instance="com.schwarzit.spectralIntellijPlugin.ApplicationSettingsConfigurable"
+                                 id="com.schwarzit.spectralIntellijPlugin.ApplicationSettingsConfigurable"
+                                 displayName="Spectral"/>
+        <applicationService serviceImplementation="com.schwarzit.spectralIntellijPlugin.ApplicationSettingsState"/>
+    </extensions>
 </idea-plugin>
