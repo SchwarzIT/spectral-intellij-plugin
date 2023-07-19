@@ -47,9 +47,9 @@ Examples:
 
 ### Customizable file matching
 
-Select the files that will be linted. By default, every JSON or YAML file will be linted by the plugin when it's
-opened.
-You can adjust this in the Settings under Preferences -> Tools -> Spectral -> Included files. All paths are relative
+Select the files that will be linted. By default, every file called "openapi.json" or "openapi.yml" will be linted by
+the plugin when it's opened.
+You can adjust this in the settings under Preferences -> Tools -> Spectral -> Included files. All paths are relative
 to the projects working directory.
 
 Examples:

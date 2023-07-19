@@ -13,8 +13,8 @@ class ProjectSettingsState : PersistentStateComponent<ProjectSettingsState> {
 
     var ruleset: String = "https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml"
     var includedFiles: String = """
-        **.json
-        **.yml
+        **openapi.json
+        **openapi.yml
     """.trimIndent()
 
     override fun getState(): ProjectSettingsState {
