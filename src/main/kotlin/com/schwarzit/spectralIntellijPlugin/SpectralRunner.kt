@@ -13,7 +13,7 @@ import java.time.Duration
 import java.util.concurrent.ExecutionException
 
 @Service
-class SpectralRunner(project: Project) {
+class SpectralRunner(private val project: Project) {
     companion object {
         private val logger = getLogger()
         private val timeout = Duration.ofSeconds(30)
@@ -27,15 +27,16 @@ class SpectralRunner(project: Project) {
         val tempFile = try {
             File.createTempFile("spectral-intellij-input-", ".tmp").apply { writeText(content) }
         } catch (e: IOException) {
-            throw SpectralException("Failed to  create temporary file", e)
+            throw SpectralException("Failed to create temporary file", e)
         }
 
         return try {
             createCommand()
+                .withWorkDirectory(project.basePath)
                 .withParameters("-r", settings.ruleset)
                 .withParameters("-f", "json")
                 .withParameters("lint")
-                .withInput(tempFile)
+                .withInput(tempFile.absoluteFile)
                 .execute()
         } finally {
             if (!tempFile.delete()) {
