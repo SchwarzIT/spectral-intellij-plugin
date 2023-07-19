@@ -22,11 +22,17 @@
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.yaml</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <externalAnnotator language="JSON"
-                           implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"
-                           id="SpectralExternalAnnotator"/>
+        <externalAnnotator
+                language="JSON"
+                implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"
+                id="SpectralExternalAnnotatorJson"/>
+        <externalAnnotator
+                language="yaml"
+                implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"
+                id="SpectralExternalAnnotatorYaml"/>
 
         <projectConfigurable parentId="tools"
                              instance="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"

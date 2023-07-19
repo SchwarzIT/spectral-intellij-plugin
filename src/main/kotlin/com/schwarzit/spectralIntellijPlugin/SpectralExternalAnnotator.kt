@@ -12,16 +12,34 @@ import com.intellij.openapi.util.Computable
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
+import com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState
+import org.jetbrains.yaml.psi.YAMLFile
+import java.nio.file.FileSystems
 
 class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>() {
-
     companion object {
         val logger = getLogger()
     }
 
     override fun collectInformation(file: PsiFile, editor: Editor, hasErrors: Boolean): Editor? {
-        if (file !is JsonFile) return null
+        if (file !is JsonFile && file !is YAMLFile) return null
+
+        try {
+            val settings = editor.project?.service<ProjectSettingsState>()
+            val includedFiles = settings?.includedFiles?.lines() ?: emptyList()
+            if (!isFileIncluded(file, includedFiles)) return null
+        } catch (e: Throwable) {
+            logger.error("Failed to check if current file is included")
+            return null
+        }
+
         return editor
+    }
+
+    private fun isFileIncluded(file: PsiFile, includedFiles: List<String>): Boolean {
+        val matcherPattern = "glob:" + file.project.basePath + "/{" + includedFiles.joinToString(",") + "}"
+        val fileMatcher = FileSystems.getDefault().getPathMatcher(matcherPattern)
+        return fileMatcher.matches(file.virtualFile.toNioPath())
     }
 
     override fun doAnnotate(editor: Editor): List<SpectralIssue> {
@@ -50,7 +68,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>
         return try {
             val issues = linter.run(editor.document.text)
             issues
-        } catch (e: SpectralException) {
+        } catch (e: Throwable) {
             emptyList()
         }
     }

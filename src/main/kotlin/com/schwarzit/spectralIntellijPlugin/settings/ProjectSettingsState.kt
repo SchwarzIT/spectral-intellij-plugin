@@ -12,6 +12,10 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 class ProjectSettingsState : PersistentStateComponent<ProjectSettingsState> {
 
     var ruleset: String = "https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml"
+    var includedFiles: String = """
+        **.json
+        **.yml
+    """.trimIndent()
 
     override fun getState(): ProjectSettingsState {
         return this

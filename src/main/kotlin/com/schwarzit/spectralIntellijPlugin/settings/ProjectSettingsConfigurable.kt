@@ -14,6 +14,7 @@ class ProjectSettingsConfigurable(private val project: Project) : Configurable {
         settingsComponent = SettingsComponent()
 
         settingsComponent.rulesetInput.text = settings.ruleset
+        settingsComponent.includedFilesInput.text = settings.includedFiles
         return settingsComponent.mainPanel
     }
 
@@ -23,12 +24,15 @@ class ProjectSettingsConfigurable(private val project: Project) : Configurable {
 
     override fun isModified(): Boolean {
         val settings = project.service<ProjectSettingsState>()
-        return settingsComponent.rulesetInput.text != settings.ruleset
+        var modified = settingsComponent.rulesetInput.text != settings.ruleset
+        modified = modified || settingsComponent.includedFilesInput.text != settings.includedFiles
+        return modified
     }
 
     override fun apply() {
         val settings = project.service<ProjectSettingsState>()
         settings.ruleset = settingsComponent.rulesetInput.text
+        settings.includedFiles = settingsComponent.includedFilesInput.text
     }
 
     override fun getDisplayName(): String {
