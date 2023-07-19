@@ -49,7 +49,6 @@ class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>
 
         return try {
             val issues = linter.run(editor.document.text)
-            logger.warn(issues.toString())
             issues
         } catch (e: SpectralException) {
             emptyList()
