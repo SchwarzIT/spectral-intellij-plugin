@@ -4,7 +4,7 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.schwarzit.spectralIntellijPlugin.settings.ApplicationSettingsState
+import com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState
 import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
@@ -21,7 +21,7 @@ class SpectralRunner(project: Project) {
 
     private val executor = project.service<CommandLineExecutor>()
     private val parser = project.service<SpectralOutputParser>()
-    private val appSettings = service<ApplicationSettingsState>()
+    private val settings = project.service<ProjectSettingsState>()
 
     fun run(content: String): List<SpectralIssue> {
         val tempFile = try {
@@ -32,7 +32,7 @@ class SpectralRunner(project: Project) {
 
         return try {
             createCommand()
-                .withParameters("-r", appSettings.ruleset)
+                .withParameters("-r", settings.ruleset)
                 .withParameters("-f", "json")
                 .withParameters("lint")
                 .withInput(tempFile)

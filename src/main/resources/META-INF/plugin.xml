@@ -11,11 +11,10 @@
                            implementationClass="com.schwarzit.spectralIntellijPlugin.SpectralExternalAnnotator"
                            id="SpectralExternalAnnotator"/>
 
-        <applicationConfigurable parentId="tools"
-                                 instance="com.schwarzit.spectralIntellijPlugin.settings.ApplicationSettingsConfigurable"
-                                 id="com.schwarzit.spectralIntellijPlugin.settings.ApplicationSettingsConfigurable"
-                                 displayName="Spectral"/>
-        <applicationService
-                serviceImplementation="com.schwarzit.spectralIntellijPlugin.settings.ApplicationSettingsState"/>
+        <projectConfigurable parentId="tools"
+                             instance="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"
+                             id="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"
+                             displayName="Spectral" nonDefaultProject="true"/>
+        <projectService serviceImplementation="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState"/>
     </extensions>
 </idea-plugin>

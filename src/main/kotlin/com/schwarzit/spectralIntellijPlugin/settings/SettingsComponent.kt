@@ -5,7 +5,7 @@ import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
 import javax.swing.JPanel
 
-class AppSettingsComponent {
+class SettingsComponent {
 
     val mainPanel: JPanel
     val rulesetInput = JBTextField()
