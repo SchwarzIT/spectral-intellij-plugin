@@ -12,9 +12,10 @@
                            id="SpectralExternalAnnotator"/>
 
         <applicationConfigurable parentId="tools"
-                                 instance="com.schwarzit.spectralIntellijPlugin.ApplicationSettingsConfigurable"
-                                 id="com.schwarzit.spectralIntellijPlugin.ApplicationSettingsConfigurable"
+                                 instance="com.schwarzit.spectralIntellijPlugin.settings.ApplicationSettingsConfigurable"
+                                 id="com.schwarzit.spectralIntellijPlugin.settings.ApplicationSettingsConfigurable"
                                  displayName="Spectral"/>
-        <applicationService serviceImplementation="com.schwarzit.spectralIntellijPlugin.ApplicationSettingsState"/>
+        <applicationService
+                serviceImplementation="com.schwarzit.spectralIntellijPlugin.settings.ApplicationSettingsState"/>
     </extensions>
 </idea-plugin>

@@ -1,4 +1,4 @@
-package com.schwarzit.spectralIntellijPlugin
+package com.schwarzit.spectralIntellijPlugin.settings
 
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField

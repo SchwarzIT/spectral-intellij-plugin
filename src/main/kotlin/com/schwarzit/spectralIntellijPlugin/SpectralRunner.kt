@@ -4,6 +4,7 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import com.schwarzit.spectralIntellijPlugin.settings.ApplicationSettingsState
 import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets

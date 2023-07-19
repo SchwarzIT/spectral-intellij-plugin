@@ -1,4 +1,4 @@
-package com.schwarzit.spectralIntellijPlugin
+package com.schwarzit.spectralIntellijPlugin.settings
 
 import com.intellij.openapi.options.Configurable
 import javax.swing.JComponent
