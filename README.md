@@ -1,52 +1,67 @@
-# Spectral IntelliJ Plugin
+# jetbrains-plugin-template
 
-[![SIT](https://img.shields.io/badge/SIT-awesome-blueviolet.svg)](https://jobs.schwarz)
+![Build](https://github.com/markbrockhoff/jetbrains-plugin-template/workflows/Build/badge.svg)
+[![Version](https://img.shields.io/jetbrains/plugin/v/com.schwarzit.spectral-intellij-plugin.svg)](https://plugins.jetbrains.com/plugin/com.schwarzit.spectral-intellij-plugin)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.schwarzit.spectral-intellij-plugin.svg)](https://plugins.jetbrains.com/plugin/com.schwarzit.spectral-intellij-plugin)
 
-This plugin is a wrapper for the tool [Spectral](https://github.com/stoplightio/spectral), a linter for OpenApi schemas.
-It supports all Jetbrains IDEs starting at version 2020.3.
-
-## Features
-
-### Automatic Linting
-Automatic linting of your OpenApi specifications and highlighting in your editor
-
-### Customizable Ruleset
-Specify your own [ruleset](https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0NA-rulesets) in the plugins settings,
-  under `Preferences -> Tools -> Spectral -> Ruleset`. There you can select a file on your local machine or just paste the
-  URL of a ruleset available on the internet e.g.:
-  [Schwarz IT API linting rules](https://github.com/SchwarzIT/api-linter-rules)
-
-  The default ruleset comes bundled with the plugin and uses Spectrals
-  recommended [OAS](https://meta.stoplight.io/docs/spectral/ZG9jOjExNw-open-api-rules) ruleset.
-### Customizable File Matching pattern
-The customization of file matching is possible under `Preferences -> Tools -> Spectral -> Included files`. By 
-default, every JSON file will be linted with default pattern `**.json` by the plugin, when json file is opened. You 
-can adjust this to `**openapi*.json`(e.g. matches openapi.json), so that some other json files, 
-such as `composer. json`, `package.json`, will not be included and linted automatically.
+<!-- Plugin description -->
+This plugin is a wrapper for the tool <a href="https://github.com/stoplightio/spectral">Spectral</a>, a linter for
+OpenApi schemas.
 
 ## Installation
 
-### From the Jetbrains Marketplace
+- Using IDE built-in plugin system:
 
-The latest version of the plugin is available on the [Jetbrains marketplace](https://plugins.jetbrains.com/plugin/18520-spectral). To install it you can follow these
-steps:
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Spectral"</kbd> >
+  <kbd>Install Plugin</kbd>
 
-1. Open your Jetbrains IDE
-2. Go to Preferences -> Plugins and search for "Spectral"
-3. Click install on the first result
+- Manually:
 
-### Building from source
+  Download the [latest release](https://github.com/markbrockhoff/jetbrains-plugin-template/releases/latest) and install
+  it manually using
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
-1. Checkout this repository
-2. Run ./gradlew buildPlugin
-3. Install the generated archive under build/distributions/spectral-intellij-plugin*.zip in your IDE (
-   See [Install plugin from disk](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk))
+Since version 2 of this plugin it is required to have the spectral CLI installed on your system.
+If you don't have it installed yet make sure to follow this
+guide: [Installing Spectral](https://docs.stoplight.io/docs/spectral/b8391e051b7d8-installation)
 
-## Debugging
+_Note: The CLI needs to be in your path and executable from the command line._
 
-To debug the plugin you can open the IDE logs under Help -> Show log in Finder/Explorer. There you will find the logfile
-of your IDE containing detailed information about what the plugin is doing under the category "Spectral".
+## Features
 
-If you need even more information, you can enable debug logging in your IDE by going to Help -> Diagnostic Tools ->
-Debug Log Settings. Just add a line containing "Spectral" in there and you will receive even more detailed information
-in the before mentioned logfile.
+### Automatic linting
+
+Automatic linting of your OpenApi specifications and highlighting in your editor
+
+### Customizable Ruleset
+
+Specify your own [ruleset](https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0NA-rulesets) in the plugins
+settings, under Preferences -> Tools -> Spectral -> Ruleset.
+There you can specify a file on your local machine or just paste the URL of a ruleset available on the internet
+e.g.: [Schwarz IT API linting rules](https://github.com/SchwarzIT/api-linter-rules).
+
+Examples:
+
+- Link to a hosted ruleset: https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml
+- Local ruleset inside the project: ".spectral.json"
+
+### Customizable file matching
+
+Select the files that will be linted. By default, every file called "openapi.json" or "openapi.yml" will be linted by
+the plugin when it's opened.
+You can adjust this in the settings under Preferences -> Tools -> Spectral -> Included files. All paths are relative
+to the projects working directory.
+
+Examples:
+
+- openapi.json: Matches the file called "openapi.json" inside the root directory of the project
+- components/**.json: Matches all files inside the directory "components" that end with ".json"
+
+<!-- Plugin description end -->
+
+---
+Plugin based on the [IntelliJ Platform Plugin Template][template].
+
+[template]: https://github.com/JetBrains/intellij-platform-plugin-template
+
+[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
