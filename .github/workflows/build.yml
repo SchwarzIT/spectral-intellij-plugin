@@ -113,8 +113,9 @@ jobs:
           path: ${{ github.workspace }}/build/reports/pluginVerifier
 
       # Run Qodana inspections
-      - name: Qodana - Code Inspection
-        uses: JetBrains/qodana-action@v2022.3.4
+      # Qodana is disabled for now as we don't have a token for it
+      # - name: Qodana - Code Inspection
+      #   uses: JetBrains/qodana-action@v2022.3.4
 
       # Prepare plugin archive content for creating artifact
       - name: Prepare Plugin Artifact
