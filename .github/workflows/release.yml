@@ -12,6 +12,7 @@ jobs:
   # Prepare and publish the plugin to the Marketplace repository
   release:
     name: Publish Plugin
+    environment: prod
     runs-on: ubuntu-latest
     permissions:
       contents: write
