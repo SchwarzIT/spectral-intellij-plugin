@@ -3,6 +3,7 @@ package com.schwarzit.spectralIntellijPlugin
 import com.intellij.json.psi.JsonFile
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.ExternalAnnotator
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
@@ -78,13 +79,31 @@ class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>
         val documentManager = PsiDocumentManager.getInstance(file.project)
         val document = documentManager.getDocument(file) ?: return
 
-        issues?.forEach { issue ->
+        if (issues == null) return
+
+        if (issues.any { issue -> issue.code == "unrecognized-format" }) {
+            logger.warn("Linted openapi spec is not valid: Skipping linting")
+            holder.newAnnotation(HighlightSeverity.WARNING, "File is not formatted correctly. Linting was skipped.")
+                .fileLevel()
+                .create()
+            return
+        }
+
+        for (issue in issues) {
+            // It happens that spectral produces invalid text ranges, those will just be ignored
+            var textRange: TextRange
+            try {
+                textRange = calculateIssueTextRange(document, issue.range)
+            } catch (e: Throwable) {
+                continue
+            }
+
             holder
                 .newAnnotation(
                     mapSeverity(issue.severity),
                     issue.code + ": " + issue.message
                 )
-                .range(calculateIssueTextRange(document, issue.range))
+                .range(textRange)
                 .create()
         }
     }
