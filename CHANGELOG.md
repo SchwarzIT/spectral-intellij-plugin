@@ -1,8 +1,12 @@
+<!-- @formatter:off -->
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # Changelog
 
 ## [Unreleased]
+
+### Changed
+- Improve error handling in case of an invalid openapi spec
 
 ## [2.0.0-alpha.2] - 2023-07-21
 
