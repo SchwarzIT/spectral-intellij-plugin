@@ -5,6 +5,8 @@
 
 ## [Unreleased]
 
+## [2.1.1] - 2023-08-02
+
 ### Changed
 - Delete unused constructor from SpectralException
 - Turn SpectralRunner into a light service
@@ -56,7 +58,8 @@
 - BREAKING: Spectral no longer comes bundled with the plugin and needs to be installed additionally now
 - BREAKING: Settings now only apply on a project level
 
-[Unreleased]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.0.0-alpha.3...v2.0.0
 [2.0.0-alpha.1]: https://github.com/SchwarzIT/spectral-intellij-plugin/commits/v2.0.0-alpha.1
