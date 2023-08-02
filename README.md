@@ -1,6 +1,6 @@
-# jetbrains-plugin-template
+# Spectral Linter Plugin for JetBrains
 
-![Build](https://github.com/markbrockhoff/jetbrains-plugin-template/workflows/Build/badge.svg)
+![Build](https://github.com/SchwarzIT/spectral-intellij-plugin/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/com.schwarzit.spectral-intellij-plugin.svg)](https://plugins.jetbrains.com/plugin/com.schwarzit.spectral-intellij-plugin)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/com.schwarzit.spectral-intellij-plugin.svg)](https://plugins.jetbrains.com/plugin/com.schwarzit.spectral-intellij-plugin)
 
@@ -17,7 +17,7 @@ OpenApi schemas.
 
 - Manually:
 
-  Download the [latest release](https://github.com/markbrockhoff/jetbrains-plugin-template/releases/latest) and install
+  Download the [latest release](https://github.com/SchwarzIT/spectral-intellij-plugin/releases/latest) and install
   it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
@@ -33,29 +33,36 @@ _Note: The CLI needs to be in your path and executable from the command line._
 
 Automatic linting of your OpenApi specifications and highlighting in your editor
 
-### Customizable Ruleset
+### Configurable Ruleset
 
 Specify your own [ruleset](https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0NA-rulesets) in the plugins
 settings, under Preferences -> Tools -> Spectral -> Ruleset.
+
 There you can specify a file on your local machine or just paste the URL of a ruleset available on the internet
 e.g.: [Schwarz IT API linting rules](https://github.com/SchwarzIT/api-linter-rules).
 
 Examples:
 
-- Link to a hosted ruleset: https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml
-- Local ruleset inside the project: ".spectral.json"
+- Link to a hosted ruleset: `https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml`
+- Local ruleset relative to Project base-path: `.spectral.json`
+- Fully-qualified path: `/Users/mick/.spectral.yaml`
 
-### Customizable file matching
+### Configurable Included path patterns
 
-Select the files that will be linted. By default, every file called "openapi.json" or "openapi.yml" will be linted by
-the plugin when it's opened.
-You can adjust this in the settings under Preferences -> Tools -> Spectral -> Included files. All paths are relative
-to the projects working directory.
+Select the files that will be linted. By default, every file called "openapi.json", "openapi.yml" or "openapi.yaml"
+within the Project root will be matched for linting by the plugin when it's opened.
+
+You can adjust this in the settings under Preferences -> Tools -> Spectral -> Included path patterns. All paths are relative
+to the project's root directory unless absolute.
 
 Examples:
 
-- openapi.json: Matches the file called "openapi.json" inside the root directory of the project
-- components/**.json: Matches all files inside the directory "components" that end with ".json"
+- `openapi.json`: Matches the file called "openapi.json" inside the root directory of the project
+- `components/**.yaml`: Matches all files inside the subdirectory "components" that end with ".json"
+- `/Users/mick/code/**/openapi*.yaml`: Matches all YAML files within the absolute path "/Users/mick/code" that start with "openapi" 
+
+**Note:** Each file must also be recognised by the IDE as a JSON or YAML file - that is with a suitable File Type association.
+If it is detected as a plain text (or any other type) it will be ignored.
 
 <!-- Plugin description end -->
 

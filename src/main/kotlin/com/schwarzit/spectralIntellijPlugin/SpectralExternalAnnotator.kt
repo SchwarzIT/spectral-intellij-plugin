@@ -16,13 +16,14 @@ import com.intellij.psi.PsiFile
 import com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState
 import org.jetbrains.yaml.psi.YAMLFile
 import java.nio.file.FileSystems
+import java.nio.file.Paths
 
-class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>() {
+class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile,Editor>, List<SpectralIssue>>() {
     companion object {
         val logger = getLogger()
     }
 
-    override fun collectInformation(file: PsiFile, editor: Editor, hasErrors: Boolean): Editor? {
+    override fun collectInformation(file: PsiFile, editor: Editor, hasErrors: Boolean): Pair<PsiFile,Editor>? {
         if (file !is JsonFile && file !is YAMLFile) return null
 
         try {
@@ -34,21 +35,29 @@ class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>
             return null
         }
 
-        return editor
+        return Pair(file, editor)
     }
 
     private fun isFileIncluded(file: PsiFile, includedFiles: List<String>): Boolean {
-        val matcherPattern = "glob:" + file.project.basePath + "/{" + includedFiles.joinToString(",") + "}"
+        var matcherPattern = "glob:{"
+        val iterator = includedFiles.iterator()
+        while (iterator.hasNext()) {
+            val pathPattern = iterator.next()
+            if (! Paths.get(pathPattern).isAbsolute()) matcherPattern += file.project.basePath + "/"
+            matcherPattern += pathPattern
+            matcherPattern += if (iterator.hasNext()) "," else "}"
+        }
+        logger.trace(matcherPattern)
         val fileMatcher = FileSystems.getDefault().getPathMatcher(matcherPattern)
         return fileMatcher.matches(file.virtualFile.toNioPath())
     }
 
-    override fun doAnnotate(editor: Editor): List<SpectralIssue> {
+    override fun doAnnotate(info: Pair<PsiFile,Editor>): List<SpectralIssue> {
         val progressManager = ProgressManager.getInstance()
-        val computable = Computable { lintFile(editor) }
+        val computable = Computable { lintFile(info.second) }
         val indicator = BackgroundableProcessIndicator(
-            editor.project,
-            "Spectral: analyzing OpenAPI spec...",
+            info.second.project,
+            "Spectral: analyzing OpenAPI specification ${info.first.name} ...",
             "Stop",
             "Stop file analysis",
             false
@@ -70,7 +79,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Editor, List<SpectralIssue>>
             val issues = linter.run(editor.document.text)
             issues
         } catch (e: Throwable) {
-            logger.debug(e)
+            logger.warn("Error running spectral command-line: $e", e)
             emptyList()
         }
     }

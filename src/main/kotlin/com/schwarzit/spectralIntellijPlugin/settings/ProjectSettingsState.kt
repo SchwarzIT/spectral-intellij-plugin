@@ -15,6 +15,7 @@ class ProjectSettingsState : PersistentStateComponent<ProjectSettingsState> {
     var includedFiles: String = """
         **openapi.json
         **openapi.yml
+        **openapi.yaml
     """.trimIndent()
 
     override fun getState(): ProjectSettingsState {
