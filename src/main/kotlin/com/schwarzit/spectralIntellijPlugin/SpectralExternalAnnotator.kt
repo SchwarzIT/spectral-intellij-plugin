@@ -43,7 +43,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile,Editor>, List<S
         val iterator = includedFiles.iterator()
         while (iterator.hasNext()) {
             val pathPattern = iterator.next()
-            if (! Paths.get(pathPattern).isAbsolute()) matcherPattern += file.project.basePath + "/"
+            if (!Paths.get(pathPattern).isAbsolute) matcherPattern += file.project.basePath + "/"
             matcherPattern += pathPattern
             matcherPattern += if (iterator.hasNext()) "," else "}"
         }
