@@ -5,7 +5,6 @@
 
 ## [Unreleased]
 
-## [2.1.0] - 2023-08-02
 
 ### Changed
 - Make compatible with IntelliJ IDEA 2023.2
