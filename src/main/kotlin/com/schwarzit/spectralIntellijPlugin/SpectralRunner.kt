@@ -12,7 +12,7 @@ import java.text.ParseException
 import java.time.Duration
 import java.util.concurrent.ExecutionException
 
-@Service
+@Service(Service.Level.PROJECT)
 class SpectralRunner(private val project: Project) {
     companion object {
         private val logger = getLogger()
