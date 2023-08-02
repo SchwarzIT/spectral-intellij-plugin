@@ -5,6 +5,15 @@
 
 ## [Unreleased]
 
+## [2.1.0] - 2023-08-02
+
+### Changed
+- Make compatible with IntelliJ IDEA 2023.2
+- Add support for absolute paths in file-matcher
+- Fixes & improvements to `README.md`
+- Add name of file being analysed to transient status message
+- Log an error if `spectral` execution fails due to misconfiguration. This is not ideal but at least offers some user feedback.
+
 ## [2.0.0] - 2023-07-24
 
 ### Changed

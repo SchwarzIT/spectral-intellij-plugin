@@ -57,7 +57,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile,Editor>, List<S
         val computable = Computable { lintFile(info.second) }
         val indicator = BackgroundableProcessIndicator(
             info.second.project,
-            "Spectral: analyzing OpenAPI specification ${info.first.name} ...",
+            "Spectral: analyzing OpenAPI specification '${info.first.name}' ...",
             "Stop",
             "Stop file analysis",
             false
@@ -79,7 +79,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile,Editor>, List<S
             val issues = linter.run(editor.document.text)
             issues
         } catch (e: Throwable) {
-            logger.warn("Error running spectral command-line: $e", e)
+            logger.error(e)
             emptyList()
         }
     }

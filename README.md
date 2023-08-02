@@ -58,8 +58,8 @@ to the project's root directory unless absolute.
 Examples:
 
 - `openapi.json`: Matches the file called "openapi.json" inside the root directory of the project
-- `components/**.yaml`: Matches all files inside the subdirectory "components" that end with ".json"
-- `/Users/mick/code/**/openapi*.yaml`: Matches all YAML files within the absolute path "/Users/mick/code" that start with "openapi" 
+- `components/**.yaml`: Matches all files inside the project subdirectory "components" that end with ".yaml"
+- `/Users/mick/code/**/openapi*.yaml`: Matches all YAML files within the absolute path "/Users/mick/code" that start with "openapi" and end with ".yaml"
 
 **Note:** Each file must also be recognised by the IDE as a JSON or YAML file - that is with a suitable File Type association.
 If it is detected as a plain text (or any other type) it will be ignored.
