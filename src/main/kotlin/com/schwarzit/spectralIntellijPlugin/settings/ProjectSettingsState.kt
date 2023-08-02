@@ -1,6 +1,7 @@
 package com.schwarzit.spectralIntellijPlugin.settings
 
 import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
@@ -9,6 +10,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
     name = "com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState",
     storages = [Storage("spectral.xml")]
 )
+@Service(Service.Level.PROJECT)
 class ProjectSettingsState : PersistentStateComponent<ProjectSettingsState> {
 
     var ruleset: String = "https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml"

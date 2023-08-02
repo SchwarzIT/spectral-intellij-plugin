@@ -18,12 +18,12 @@ import org.jetbrains.yaml.psi.YAMLFile
 import java.nio.file.FileSystems
 import java.nio.file.Paths
 
-class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile,Editor>, List<SpectralIssue>>() {
+class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<SpectralIssue>>() {
     companion object {
         val logger = getLogger()
     }
 
-    override fun collectInformation(file: PsiFile, editor: Editor, hasErrors: Boolean): Pair<PsiFile,Editor>? {
+    override fun collectInformation(file: PsiFile, editor: Editor, hasErrors: Boolean): Pair<PsiFile, Editor>? {
         if (file !is JsonFile && file !is YAMLFile) return null
 
         try {
@@ -52,7 +52,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile,Editor>, List<S
         return fileMatcher.matches(file.virtualFile.toNioPath())
     }
 
-    override fun doAnnotate(info: Pair<PsiFile,Editor>): List<SpectralIssue> {
+    override fun doAnnotate(info: Pair<PsiFile, Editor>): List<SpectralIssue> {
         val progressManager = ProgressManager.getInstance()
         val computable = Computable { lintFile(info.second) }
         val indicator = BackgroundableProcessIndicator(

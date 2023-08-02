@@ -3,7 +3,7 @@
     <id>com.schwarzit.spectral-intellij-plugin</id>
     <name>Spectral</name>
     <vendor>SchwarzIT</vendor>
-    
+
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
 
@@ -21,6 +21,5 @@
                              instance="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"
                              id="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"
                              displayName="Spectral" nonDefaultProject="true"/>
-        <projectService serviceImplementation="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState"/>
     </extensions>
 </idea-plugin>

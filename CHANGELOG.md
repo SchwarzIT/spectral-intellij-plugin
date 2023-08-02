@@ -5,6 +5,12 @@
 
 ## [Unreleased]
 
+### Changed
+- Delete unused constructor from SpectralException
+- Turn SpectralRunner into a light service
+- Turn ProjectSettingsState into a light service
+- Reformat code
+
 ## [2.1.0] - 2023-08-02
 
 ### Changed
