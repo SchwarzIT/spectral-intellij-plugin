@@ -16,6 +16,7 @@ import com.intellij.psi.PsiFile
 import com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState
 import org.jetbrains.yaml.psi.YAMLFile
 import java.nio.file.FileSystems
+import java.nio.file.Path
 import java.nio.file.Paths
 
 class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<SpectralIssue>>() {
@@ -26,30 +27,31 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
     override fun collectInformation(file: PsiFile, editor: Editor, hasErrors: Boolean): Pair<PsiFile, Editor>? {
         if (file !is JsonFile && file !is YAMLFile) return null
 
+        val settings = editor.project?.service<ProjectSettingsState>()
+        val includedFiles = settings?.includedFiles?.lines() ?: emptyList()
+
         try {
-            val settings = editor.project?.service<ProjectSettingsState>()
-            val includedFiles = settings?.includedFiles?.lines() ?: emptyList()
-            if (!isFileIncluded(file, includedFiles)) return null
+            if (!isFileIncluded(file.project.basePath ?: "", file.virtualFile.toNioPath(), includedFiles)) return null
         } catch (e: Throwable) {
-            logger.error("Failed to check if current file is included")
+            logger.error("Failed to check if current file is included. Parameters: basePath: ${file.project.basePath}, path: ${file.virtualFile.toNioPath()}, includedFiles: $includedFiles")
             return null
         }
 
         return Pair(file, editor)
     }
 
-    private fun isFileIncluded(file: PsiFile, includedFiles: List<String>): Boolean {
+    fun isFileIncluded(basePath: String, path: Path, includedFiles: List<String>): Boolean {
         var matcherPattern = "glob:{"
         val iterator = includedFiles.iterator()
         while (iterator.hasNext()) {
             val pathPattern = iterator.next()
-            if (!Paths.get(pathPattern).isAbsolute) matcherPattern += file.project.basePath + "/"
+            if (!Paths.get(pathPattern).isAbsolute) matcherPattern += "$basePath/"
             matcherPattern += pathPattern
             matcherPattern += if (iterator.hasNext()) "," else "}"
         }
         logger.trace(matcherPattern)
         val fileMatcher = FileSystems.getDefault().getPathMatcher(matcherPattern)
-        return fileMatcher.matches(file.virtualFile.toNioPath())
+        return fileMatcher.matches(path)
     }
 
     override fun doAnnotate(info: Pair<PsiFile, Editor>): List<SpectralIssue> {

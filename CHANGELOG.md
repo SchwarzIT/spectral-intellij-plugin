@@ -5,6 +5,9 @@
 
 ## [Unreleased]
 
+### Changed
+- Refactor error handling for failure during file inclusion check to be more verbose
+
 ## [2.1.1] - 2023-08-02
 
 ### Changed
