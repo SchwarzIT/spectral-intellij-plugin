@@ -5,6 +5,9 @@
 
 ## [Unreleased]
 
+### Added
+- Improve check for files to lint on non unix operating systems
+
 ### Changed
 - [BREAKING] Use [ant pattern matching](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/AntPathMatcher.html) to check for included files. This might be a breaking change for some people, please check your included files in the settings if you encounter any issues. E.g. the default inclusion pattern `**openapi.json` would now no longer match the path `openapi/v1-openapi.json`, please use `**/*openapi.json` instead.
 
