@@ -45,23 +45,25 @@ Examples:
 
 - Link to a hosted ruleset: `https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml`
 - Local ruleset relative to Project base-path: `.spectral.json`
-- Fully-qualified path: `/Users/mick/.spectral.yaml`
+- Fully-qualified path: `/Users/user/.spectral.yaml`
 
 ### Configurable Included path patterns
 
 Select the files that will be linted. By default, every file called "openapi.json", "openapi.yml" or "openapi.yaml"
 within the Project root will be matched for linting by the plugin when it's opened.
 
-You can adjust this in the settings under Preferences -> Tools -> Spectral -> Included path patterns. All paths are relative
-to the project's root directory unless absolute.
+You can adjust this in the settings under Preferences -> Tools -> Spectral -> Included path patterns. All paths are
+relative to the project's root directory unless absolute.
 
 Examples:
 
 - `openapi.json`: Matches the file called "openapi.json" inside the root directory of the project
-- `components/**.yaml`: Matches all files inside the project subdirectory "components" that end with ".yaml"
-- `/Users/mick/code/**/openapi*.yaml`: Matches all YAML files within the absolute path "/Users/mick/code" that start with "openapi" and end with ".yaml"
+- `components/**/*.yaml`: Matches all files inside the project subdirectory "components" that end with ".yaml"
+- `/Users/user/code/**/openapi*.yaml`: Matches all YAML files within the absolute path "/Users/mick/code" that start
+  with "openapi" and end with ".yaml"
 
-**Note:** Each file must also be recognised by the IDE as a JSON or YAML file - that is with a suitable File Type association.
+**Note:** Each file must also be recognised by the IDE as a JSON or YAML file - that is with a suitable File Type
+association.
 If it is detected as a plain text (or any other type) it will be ignored.
 
 <!-- Plugin description end -->
