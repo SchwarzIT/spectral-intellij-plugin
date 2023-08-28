@@ -5,6 +5,8 @@
 
 ## [Unreleased]
 
+## [2.1.2] - 2023-08-28
+
 ### Changed
 - Refactor error handling for failure during file inclusion check to be more verbose
 
@@ -61,7 +63,8 @@
 - BREAKING: Spectral no longer comes bundled with the plugin and needs to be installed additionally now
 - BREAKING: Settings now only apply on a project level
 
-[Unreleased]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.1...HEAD
+[Unreleased]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.2...HEAD
+[2.1.2]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.0.0-alpha.3...v2.0.0
