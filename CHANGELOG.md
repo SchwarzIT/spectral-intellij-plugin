@@ -5,6 +5,9 @@
 
 ## [Unreleased]
 
+### Changed
+- Update depenencies
+
 ## [2.1.2] - 2023-08-28
 
 ### Changed
