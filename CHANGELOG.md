@@ -14,7 +14,7 @@
 ## [2.1.3] - 2023-09-01
 
 ### Changed
-- Update depenencies
+- Update dependencies
 
 ## [2.1.2] - 2023-08-28
 
