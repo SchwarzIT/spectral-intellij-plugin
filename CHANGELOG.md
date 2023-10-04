@@ -5,6 +5,12 @@
 
 ## [Unreleased]
 
+### Added
+- Improve check for files to lint on non unix operating systems
+
+### Changed
+- [BREAKING] Use [ant pattern matching](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/AntPathMatcher.html) to check for included files. This might be a breaking change for some people, please check your included files in the settings if you encounter any issues. E.g. the default inclusion pattern `**openapi.json` would now no longer match the path `openapi/v1-openapi.json`, please use `**/*openapi.json` instead.
+
 ## [2.1.3] - 2023-09-01
 
 ### Changed
@@ -68,8 +74,7 @@
 - BREAKING: Spectral no longer comes bundled with the plugin and needs to be installed additionally now
 - BREAKING: Settings now only apply on a project level
 
-[Unreleased]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.3...HEAD
-[2.1.3]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.2...v2.1.3
+[Unreleased]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.2...HEAD
 [2.1.2]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.0.0...v2.1.0

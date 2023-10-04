@@ -15,7 +15,8 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState
 import org.jetbrains.yaml.psi.YAMLFile
-import java.nio.file.FileSystems
+import org.springframework.util.AntPathMatcher
+import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -31,7 +32,15 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
         val includedFiles = settings?.includedFiles?.lines() ?: emptyList()
 
         try {
-            if (!isFileIncluded(file.project.basePath ?: "", file.virtualFile.toNioPath(), includedFiles)) return null
+            if (!isFileIncluded(
+                    Paths.get(file.project.basePath ?: "/"),
+                    file.virtualFile.toNioPath(),
+                    includedFiles
+                )
+            ) {
+                logger.trace("The given file ${file.virtualFile.toNioPath()} did not match any pattern defined in the settings")
+                return null
+            }
         } catch (e: Throwable) {
             logger.error("Failed to check if current file is included. Parameters: basePath: ${file.project.basePath}, path: ${file.virtualFile.toNioPath()}, includedFiles: $includedFiles")
             return null
@@ -40,18 +49,23 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
         return Pair(file, editor)
     }
 
-    fun isFileIncluded(basePath: String, path: Path, includedFiles: List<String>): Boolean {
-        var matcherPattern = "glob:{"
-        val iterator = includedFiles.iterator()
-        while (iterator.hasNext()) {
-            val pathPattern = iterator.next()
-            if (!Paths.get(pathPattern).isAbsolute) matcherPattern += "$basePath/"
-            matcherPattern += pathPattern
-            matcherPattern += if (iterator.hasNext()) "," else "}"
+    fun isFileIncluded(
+        basePath: Path,
+        path: Path,
+        includedFiles: List<String>,
+        separator: String = File.separator
+    ): Boolean {
+        val pathMatcher = AntPathMatcher(separator)
+
+        return includedFiles.any { s ->
+            var globPattern = s
+            if (!Paths.get(s).isAbsolute) {
+                var base = basePath.toString()
+                if (!base.endsWith(separator)) base += separator
+                globPattern = base + s
+            }
+            return pathMatcher.match(globPattern, path.toString())
         }
-        logger.trace(matcherPattern)
-        val fileMatcher = FileSystems.getDefault().getPathMatcher(matcherPattern)
-        return fileMatcher.matches(path)
     }
 
     override fun doAnnotate(info: Pair<PsiFile, Editor>): List<SpectralIssue> {
