@@ -5,9 +5,11 @@
 
 ## [Unreleased]
 
+## [3.0.1] - 2023-10-20
+
 ### Fixed
 
-- Fix pattern detection in relative path condition 
+- Fix pattern detection in relative path condition
 
 ## [3.0.0] - 2023-10-04
 
@@ -90,7 +92,8 @@
 - BREAKING: Spectral no longer comes bundled with the plugin and needs to be installed additionally now
 - BREAKING: Settings now only apply on a project level
 
-[Unreleased]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.3...v3.0.0
 [2.1.3]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/SchwarzIT/spectral-intellij-plugin/compare/v2.1.1...v2.1.2
