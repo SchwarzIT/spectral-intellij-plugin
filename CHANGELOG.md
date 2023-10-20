@@ -5,6 +5,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix pattern detection in relative path condition 
+
 ## [3.0.0] - 2023-10-04
 
 ### Added
