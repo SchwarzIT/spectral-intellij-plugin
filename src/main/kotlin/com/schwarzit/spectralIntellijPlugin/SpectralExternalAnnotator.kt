@@ -49,23 +49,31 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
         return Pair(file, editor)
     }
 
-    fun isFileIncluded(
-        basePath: Path,
-        path: Path,
-        includedFiles: List<String>,
-        separator: String = File.separator
-    ): Boolean {
+    fun isFileIncluded(basePath: Path, path: Path, includedFiles: List<String>, separator: String = File.separator): Boolean {
         val pathMatcher = AntPathMatcher(separator)
+        val finalPath = normalizedStringPath(path.toString(), separator);
 
         return includedFiles.any { s ->
-            var globPattern = s
-            if (!Paths.get(s).isAbsolute) {
-                var base = basePath.toString()
+            if (s.isEmpty()) return false;
+
+            var finalGlobPattern = normalizedStringPath(s, separator);
+
+            if (pathStartWithPattern(finalGlobPattern) || !Paths.get(finalGlobPattern).isAbsolute) {
+                var base = normalizedStringPath(basePath.toString(), separator);
                 if (!base.endsWith(separator)) base += separator
-                globPattern = base + s
+                finalGlobPattern = base + finalGlobPattern
             }
-            return pathMatcher.match(globPattern, path.toString())
+
+            return pathMatcher.match(finalGlobPattern, finalPath)
         }
+    }
+
+    private fun pathStartWithPattern(path: String): Boolean {
+        return path.isNotEmpty() && path[0] == '*';
+    }
+
+    private fun normalizedStringPath(path: String, separator: String): String {
+        return path.replace('\\', separator[0]).replace('/', separator[0]);
     }
 
     override fun doAnnotate(info: Pair<PsiFile, Editor>): List<SpectralIssue> {
