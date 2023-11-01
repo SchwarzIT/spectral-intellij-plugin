@@ -18,7 +18,7 @@ plugins {
     // Gradle Kover Plugin
     id("org.jetbrains.kotlinx.kover") version "0.7.3"
 
-    kotlin("plugin.serialization") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.20"
 }
 
 group = properties("pluginGroup").get()
