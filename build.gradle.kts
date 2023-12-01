@@ -140,7 +140,7 @@ tasks {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.21")
     implementation("org.springframework:spring-core:6.0.11")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
