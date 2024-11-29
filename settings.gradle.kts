@@ -1,1 +1,1 @@
-rootProject.name = "Spectral"
+rootProject.name = "Spectral Linter"

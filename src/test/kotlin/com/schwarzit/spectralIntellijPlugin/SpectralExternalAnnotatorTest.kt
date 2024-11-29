@@ -21,7 +21,7 @@ class SpectralExternalAnnotatorTest {
         val spectralExternalAnnotator = SpectralExternalAnnotator()
         val fileIncluded =
             spectralExternalAnnotator.isFileIncluded(Paths.get(basePath), Paths.get(path), includedFiles, separator)
-        Assertions.assertEquals(fileIncluded, isIncluded)
+        Assertions.assertEquals(isIncluded, fileIncluded)
     }
 
     companion object {
@@ -45,7 +45,8 @@ class SpectralExternalAnnotatorTest {
                 Arguments.of("/test", "/test/testing.test", listOf("*.test"), true, "/"),
                 Arguments.of("/", "/foo/bar/something/test.json", listOf("**/*.json"), true, "/"),
                 Arguments.of("/", "test.test", listOf("*.json", "*.yml"), false, "/"),
-                Arguments.of("/", "/test/openapi.json", listOf("**.json"), false, "/")
+                Arguments.of("/", "/test/openapi.json", listOf("*.json"), true, "/"),
+                Arguments.of("/", "/test/openapi.json", listOf("*/test/**.json"), true, "/")
             )
         }
     }

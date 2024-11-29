@@ -14,8 +14,8 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState
+import org.apache.commons.io.FilenameUtils
 import org.jetbrains.yaml.psi.YAMLFile
-import org.springframework.util.AntPathMatcher
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -50,26 +50,13 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
     }
 
     fun isFileIncluded(basePath: Path, path: Path, includedFiles: List<String>, separator: String = File.separator): Boolean {
-        val pathMatcher = AntPathMatcher(separator)
         val finalPath = normalizedStringPath(path.toString(), separator);
 
         return includedFiles.any { s ->
             if (s.isEmpty()) return false;
-
-            var finalGlobPattern = normalizedStringPath(s, separator);
-
-            if (pathStartWithPattern(finalGlobPattern) || !Paths.get(finalGlobPattern).isAbsolute) {
-                var base = normalizedStringPath(basePath.toString(), separator);
-                if (!base.endsWith(separator)) base += separator
-                finalGlobPattern = base + finalGlobPattern
-            }
-
-            return pathMatcher.match(finalGlobPattern, finalPath)
+            val finalGlobPattern = normalizedStringPath(s, separator);
+            return FilenameUtils.wildcardMatch(finalPath, finalGlobPattern)
         }
-    }
-
-    private fun pathStartWithPattern(path: String): Boolean {
-        return path.isNotEmpty() && path[0] == '*';
     }
 
     private fun normalizedStringPath(path: String, separator: String): String {
@@ -101,6 +88,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
 
         return try {
             val issues = linter.run(editor.document.text)
+
             issues
         } catch (e: Throwable) {
             logger.error(e)
@@ -127,17 +115,28 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
             var textRange: TextRange
             try {
                 textRange = calculateIssueTextRange(document, issue.range)
+                if (issue.range.start.line == 0) {
+                    holder
+                        .newAnnotation(
+                            mapSeverity(issue.severity),
+                            issue.code + ": " + issue.message
+                        )
+                        .range(textRange)
+                        .fileLevel()
+                        .create()
+                } else {
+
+                    holder
+                        .newAnnotation(
+                            mapSeverity(issue.severity),
+                            issue.code + ": " + issue.message
+                        )
+                        .range(textRange)
+                        .create()
+                }
             } catch (e: Throwable) {
                 continue
             }
-
-            holder
-                .newAnnotation(
-                    mapSeverity(issue.severity),
-                    issue.code + ": " + issue.message
-                )
-                .range(textRange)
-                .create()
         }
     }
 

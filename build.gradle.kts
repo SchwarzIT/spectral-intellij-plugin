@@ -1,47 +1,47 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
+val kotlinxSerializationJsonVersion = "1.7.3"
+val kotlinReflectVersion = "2.1.0"
+val springCoreVersion = "6.2.0"
+val junitJupiterVersion = "5.11.3"
+val junit4Version = "4.13.2"
+val commonsIoVersion = "2.18.0"
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
 
+val platformVersion = properties("platformVersion").get()
+val pluginVersion = properties("pluginVersion").get()
+
+val pluginGroup = properties("pluginGroup").get()
+
 plugins {
-    // Java support
     id("java")
-    // Kotlin support
-    kotlin("jvm") version "1.9.10"
-    // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.15.0"
-    // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "2.2.0"
-    // Gradle Qodana Plugin
+    kotlin("jvm") version "2.1.0"
+    id("org.jetbrains.intellij.platform") version "2.1.0"
+//    id("org.jetbrains.intellij.platform.migration") version "2.1.0"
+    id("org.jetbrains.changelog") version "2.2.1"
     id("org.jetbrains.qodana") version "0.1.13"
-    // Gradle Kover Plugin
     id("org.jetbrains.kotlinx.kover") version "0.7.3"
-
-    kotlin("plugin.serialization") version "1.9.10"
-}
-
-group = properties("pluginGroup").get()
-version = properties("pluginVersion").get()
-
-// Configure project's dependencies
-repositories {
-    mavenCentral()
+    kotlin("plugin.serialization") version "2.1.0"
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
-// Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-    pluginName.set(properties("pluginName"))
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
+// Configure project's dependencies
+repositories {
+    mavenCentral()
 
-    // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-    plugins.set(properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) })
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -73,7 +73,6 @@ tasks {
     }
 
     patchPluginXml {
-        version.set(properties("pluginVersion"))
         sinceBuild.set(properties("pluginSinceBuild"))
         untilBuild.set(properties("pluginUntilBuild"))
 
@@ -104,15 +103,6 @@ tasks {
         })
     }
 
-    // Configure UI tests plugin
-    // Read more: https://github.com/JetBrains/intellij-ui-test-robot
-    runIdeForUiTests {
-        systemProperty("robot-server.port", "8082")
-        systemProperty("ide.mac.message.dialogs.as.sheets", "false")
-        systemProperty("jb.privacy.policy.text", "<!--999.999-->")
-        systemProperty("jb.consents.confirmation.enabled", "false")
-    }
-
     signPlugin {
         certificateChain.set(environment("CERTIFICATE_CHAIN"))
         privateKey.set(environment("PRIVATE_KEY"))
@@ -132,16 +122,64 @@ tasks {
         })
     }
 
-    test {
-        useJUnitPlatform()
+    test { useJUnitPlatform() }
+}
+
+val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
+    task {
+        jvmArgumentProviders += CommandLineArgumentProvider {
+            listOf(
+                "-Drobot-server.port=8082",
+                "-Dide.mac.message.dialogs.as.sheets=false",
+                "-Djb.privacy.policy.text=<!--999.999-->",
+                "-Djb.consents.confirmation.enabled=false",
+            )
+        }
+    }
+
+    plugins {
+        robotServerPlugin()
     }
 }
 
-dependencies {
-    implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
-    implementation("org.springframework:spring-core:6.0.11")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+dependencies {
+    intellijPlatform {
+        intellijIdeaCommunity(platformVersion)
+        bundledPlugins(properties("platformBundledPlugins").get()
+            .split(',')
+            .map(String::trim)
+            .filter(String::isNotEmpty))
+
+        instrumentationTools()
+        pluginVerifier()
+        zipSigner()
+        testFramework(TestFrameworkType.Platform)
+    }
+
+    implementation(kotlin("stdlib"))
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationJsonVersion")
+
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
+    implementation("org.springframework:spring-core:$springCoreVersion")
+    implementation("commons-io:commons-io:$commonsIoVersion")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // Needed as workaround for https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-faq.html#junit5-test-framework-refers-to-junit4
+    testRuntimeOnly("junit:junit:$junit4Version")
+}
+
+// Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
+intellijPlatform {
+    pluginConfiguration {
+        id.set(properties("pluginId"))
+        name.set(properties("pluginName").get())
+        version.set(properties("pluginVersion").get())
+        ideaVersion {
+            sinceBuild = properties("pluginSinceBuild")
+            untilBuild = properties("pluginUntilBuild")
+        }
+    }
 }

@@ -1,8 +1,8 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.schwarzit.spectral-intellij-plugin</id>
-    <name>Spectral</name>
-    <vendor>SchwarzIT</vendor>
+    <id>com.lupor.spectral-linter-intellij-plugin</id>
+    <name>Spectral-Linter</name>
+    <vendor>lupor</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
@@ -20,6 +20,6 @@
         <projectConfigurable parentId="tools"
                              instance="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"
                              id="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsConfigurable"
-                             displayName="Spectral" nonDefaultProject="true"/>
+                             displayName="Spectral Linter" nonDefaultProject="true"/>
     </extensions>
 </idea-plugin>
