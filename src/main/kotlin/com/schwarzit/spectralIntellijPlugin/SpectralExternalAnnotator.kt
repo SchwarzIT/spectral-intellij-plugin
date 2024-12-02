@@ -18,7 +18,6 @@ import org.apache.commons.io.FilenameUtils
 import org.jetbrains.yaml.psi.YAMLFile
 import java.io.File
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<SpectralIssue>>() {
     companion object {
@@ -33,7 +32,6 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
 
         try {
             if (!isFileIncluded(
-                    Paths.get(file.project.basePath ?: "/"),
                     file.virtualFile.toNioPath(),
                     includedFiles
                 )
@@ -49,18 +47,18 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
         return Pair(file, editor)
     }
 
-    fun isFileIncluded(basePath: Path, path: Path, includedFiles: List<String>, separator: String = File.separator): Boolean {
-        val finalPath = normalizedStringPath(path.toString(), separator);
+    fun isFileIncluded(path: Path, includedFiles: List<String>, separator: String = File.separator): Boolean {
+        val finalPath = normalizedStringPath(path.toString(), separator)
 
         return includedFiles.any { s ->
-            if (s.isEmpty()) return false;
-            val finalGlobPattern = normalizedStringPath(s, separator);
+            if (s.isEmpty()) return false
+            val finalGlobPattern = normalizedStringPath(s, separator)
             return FilenameUtils.wildcardMatch(finalPath, finalGlobPattern)
         }
     }
 
     private fun normalizedStringPath(path: String, separator: String): String {
-        return path.replace('\\', separator[0]).replace('/', separator[0]);
+        return path.replace('\\', separator[0]).replace('/', separator[0])
     }
 
     override fun doAnnotate(info: Pair<PsiFile, Editor>): List<SpectralIssue> {

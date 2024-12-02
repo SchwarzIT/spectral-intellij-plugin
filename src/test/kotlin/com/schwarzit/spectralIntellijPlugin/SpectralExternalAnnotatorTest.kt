@@ -20,7 +20,7 @@ class SpectralExternalAnnotatorTest {
     ) {
         val spectralExternalAnnotator = SpectralExternalAnnotator()
         val fileIncluded =
-            spectralExternalAnnotator.isFileIncluded(Paths.get(basePath), Paths.get(path), includedFiles, separator)
+            spectralExternalAnnotator.isFileIncluded(Paths.get(path), includedFiles, separator)
         Assertions.assertEquals(isIncluded, fileIncluded)
     }
 

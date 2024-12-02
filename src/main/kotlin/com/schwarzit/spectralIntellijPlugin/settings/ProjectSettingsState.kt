@@ -13,7 +13,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 @Service(Service.Level.PROJECT)
 class ProjectSettingsState : PersistentStateComponent<ProjectSettingsState> {
 
-    var ruleset: String = "https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml"
+    var ruleset: String = "https://raw.githubusercontent.com/baloise-incubator/spectral-ruleset/refs/heads/main/zalando.yml"
     var includedFiles: String = """
         **/*openapi.json
         **/*openapi.yml

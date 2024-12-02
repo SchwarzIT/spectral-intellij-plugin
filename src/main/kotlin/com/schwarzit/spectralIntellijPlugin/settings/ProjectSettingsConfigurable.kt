@@ -36,6 +36,6 @@ class ProjectSettingsConfigurable(private val project: Project) : Configurable {
     }
 
     override fun getDisplayName(): String {
-        return "Spectral"
+        return "Spectral Linter"
     }
 }

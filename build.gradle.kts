@@ -182,4 +182,14 @@ intellijPlatform {
             untilBuild = properties("pluginUntilBuild")
         }
     }
+
+    publishing {
+        token.set(environment("PUBLISH_TOKEN"))
+    }
+
+    signing {
+        certificateChain.set(environment("CERTIFICATE_CHAIN"))
+        privateKey.set(environment("PRIVATE_KEY"))
+        password.set(environment("PRIVATE_KEY_PASSWORD"))
+    }
 }

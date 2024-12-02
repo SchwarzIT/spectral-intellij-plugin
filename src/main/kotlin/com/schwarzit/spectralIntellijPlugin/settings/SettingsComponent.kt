@@ -16,7 +16,6 @@ class SettingsComponent {
         mainPanel =
             FormBuilder.createFormBuilder()
                 .addComponent(JBLabel("Ruleset"))
-                .addComponent(JBTextArea("bla bla"))
                 .addComponent(rulesetInput)
                 .addLabeledComponent(JBLabel("Included path patterns"), includedFilesInput)
                 .addComponentFillVertically(JPanel(), 0)
