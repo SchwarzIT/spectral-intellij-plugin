@@ -8,6 +8,7 @@ val springCoreVersion = "6.2.0"
 val junitJupiterVersion = "5.11.3"
 val junit4Version = "4.13.2"
 val commonsIoVersion = "2.18.0"
+val intelliJJsonVersion = "243.22562.13"
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
@@ -17,11 +18,13 @@ val pluginVersion = properties("pluginVersion").get()
 
 val pluginGroup = properties("pluginGroup").get()
 
+val publishToken = environment("PUBLISH_TOKEN").get()
+val privateKeyPassword = environment("PRIVATE_KEY_PASSWORD").get()
+
 plugins {
     id("java")
     kotlin("jvm") version "2.1.0"
     id("org.jetbrains.intellij.platform") version "2.1.0"
-//    id("org.jetbrains.intellij.platform.migration") version "2.1.0"
     id("org.jetbrains.changelog") version "2.2.1"
     id("org.jetbrains.qodana") version "0.1.13"
     id("org.jetbrains.kotlinx.kover") version "0.7.3"
@@ -103,25 +106,6 @@ tasks {
         })
     }
 
-    signPlugin {
-        certificateChain.set(environment("CERTIFICATE_CHAIN"))
-        privateKey.set(environment("PRIVATE_KEY"))
-        password.set(environment("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        dependsOn("patchChangelog")
-        token.set(environment("PUBLISH_TOKEN"))
-        // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
-        // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
-        // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels.set(properties("pluginVersion").map {
-            listOf(
-                it.split('-').getOrElse(1) { "default" }.split('.').first()
-            )
-        })
-    }
-
     test { useJUnitPlatform() }
 }
 
@@ -150,6 +134,8 @@ dependencies {
             .split(',')
             .map(String::trim)
             .filter(String::isNotEmpty))
+
+        plugin("com.intellij.modules.json:$intelliJJsonVersion")
 
         instrumentationTools()
         pluginVerifier()
@@ -184,12 +170,12 @@ intellijPlatform {
     }
 
     publishing {
-        token.set(environment("PUBLISH_TOKEN"))
+        token.set(publishToken)
     }
 
     signing {
-        certificateChain.set(environment("CERTIFICATE_CHAIN"))
-        privateKey.set(environment("PRIVATE_KEY"))
-        password.set(environment("PRIVATE_KEY_PASSWORD"))
+        certificateChainFile.set(file("certificate/private.pem"))
+        privateKeyFile.set(file("certificate/private.pem"))
+        password.set(privateKeyPassword)
     }
 }
