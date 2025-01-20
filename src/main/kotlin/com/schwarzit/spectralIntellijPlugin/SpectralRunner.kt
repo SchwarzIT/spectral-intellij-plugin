@@ -10,6 +10,7 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.text.ParseException
 import java.time.Duration
+import java.util.Locale
 import java.util.concurrent.ExecutionException
 
 @Service(Service.Level.PROJECT)
@@ -47,7 +48,9 @@ class SpectralRunner(private val project: Project) {
     }
 
     private fun createCommand(): GeneralCommandLine {
-        return GeneralCommandLine("spectral").withCharset(StandardCharsets.UTF_8)
+        val isWindows = System.getProperty("os.name", "unknown").lowercase(Locale.US).contains("windows")
+        val command = if (isWindows) listOf("cmd", "/C", "spectral.cmd") else listOf("spectral")
+        return GeneralCommandLine(command).withCharset(StandardCharsets.UTF_8)
     }
 
     @Throws(SpectralException::class)
