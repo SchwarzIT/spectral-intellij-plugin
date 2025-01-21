@@ -8,7 +8,6 @@
     <depends>org.jetbrains.plugins.yaml</depends>
     <!-- These two dependencies need to be listed explicitly, there is still an ongoing issue in jetbrains about them though: https://intellij-support.jetbrains.com/hc/en-us/community/posts/21479962703890-JSON-plugin-dependency-cannot-be-resolved -->
     <depends>com.intellij.modules.json</depends>
-    <depends>com.intellij.json.frontend</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <externalAnnotator
