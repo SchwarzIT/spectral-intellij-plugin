@@ -5,11 +5,13 @@
 
 ## [Unreleased]
 
-## [3.0.2] - 2025-01-21
+## [3.0.3] - 2025-01-21
 
 ### Fixed
 
 - Hotfix: Remove non-existing module dependency
+
+## [3.0.2] - 2025-01-21
 
 ### Fixed
 
