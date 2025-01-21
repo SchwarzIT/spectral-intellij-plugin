@@ -9,6 +9,10 @@
 
 ### Fixed
 
+- Hotfix: Remove non-existing module dependency
+
+### Fixed
+
 - Make com.intellij.modules.json an explicit dependency to resolve plugin validation issue
 - Fix an issue with deprecation warnings logged to the spectral commands output for Node versions >=21
 
