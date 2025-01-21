@@ -9,9 +9,17 @@ updates:
     target-branch: "main"
     schedule:
       interval: "monthly"
+    groups:
+      gradleDependencies:
+        patterns:
+          - "*"
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     target-branch: "main"
     schedule:
       interval: "monthly"
+    groups:
+      githubActionDependencies:
+        patterns:
+          - "*"
