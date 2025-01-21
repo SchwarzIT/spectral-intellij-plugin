@@ -47,7 +47,9 @@ class SpectralRunner(private val project: Project) {
     }
 
     private fun createCommand(): GeneralCommandLine {
-        return GeneralCommandLine("spectral").withCharset(StandardCharsets.UTF_8)
+        // NODE_OPTIONS need to be set as the spectral cli currently uses a deprecated dependency (See: https://github.com/stoplightio/spectral/issues/2622)
+        // By default this warning would be printed when executing the command making the plugin fail when attempting to parse the command response
+        return GeneralCommandLine("spectral").withCharset(StandardCharsets.UTF_8).withEnvironment("NODE_OPTIONS", "--no-warnings")
     }
 
     @Throws(SpectralException::class)
