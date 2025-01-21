@@ -5,6 +5,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Make com.intellij.modules.json an explicit dependency to resolve plugin validation issue
+
 ## [3.0.1] - 2023-10-20
 
 ### Fixed

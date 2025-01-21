@@ -91,6 +91,7 @@ jobs:
   verifyPlugin:
     name: "Run Plugin Verifier"
     runs-on: ubuntu-latest
+    if: false # The verifyPlugin step was disabled as it consumed more storage than available on the default github action runner
     steps:
       # Free GitHub Actions Environment Disk Space
       - name: Maximize Build Space
