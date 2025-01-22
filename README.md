@@ -5,6 +5,7 @@
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/com.schwarzit.spectral-intellij-plugin.svg)](https://plugins.jetbrains.com/plugin/com.schwarzit.spectral-intellij-plugin)
 
 <!-- Plugin description -->
+
 This plugin is a wrapper for the tool <a href="https://github.com/stoplightio/spectral">Spectral</a>, a linter for
 OpenApi schemas.
 
@@ -25,7 +26,8 @@ Since version 2 of this plugin it is required to have the spectral CLI installed
 If you don't have it installed yet make sure to follow this
 guide: [Installing Spectral](https://docs.stoplight.io/docs/spectral/b8391e051b7d8-installation)
 
-_Note: The CLI needs to be in your path and executable from the command line._
+> Note: The CLI needs to be in your path and executable from the command line.
+> If you're using Windows you should install the proper binary (see: https://github.com/SchwarzIT/spectral-intellij-plugin/issues/121#issuecomment-2606560991)
 
 ## Features
 
@@ -59,18 +61,18 @@ Examples:
 
 - `openapi.json`: Matches the file called "openapi.json" inside the root directory of the project
 - `components/**/*.yaml`: Matches all files inside the project subdirectory "components" that end with ".yaml"
-- `/Users/user/code/**/openapi*.yaml`: Matches all YAML files within the absolute path "/Users/mick/code" that start
+- `/Users/user/code/**/openapi*.yaml`: Matches all YAML files within the absolute path "/Users/user/code" that start
   with "openapi" and end with ".yaml"
 
-**Note:** Each file must also be recognised by the IDE as a JSON or YAML file - that is with a suitable File Type
+**Note:** Each file must also be recognized by the IDE as a JSON or YAML file - that is with a suitable File Type
 association.
 If it is detected as a plain text (or any other type) it will be ignored.
 
 <!-- Plugin description end -->
 
 ---
+
 Plugin based on the [IntelliJ Platform Plugin Template][template].
 
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
-
 [docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
