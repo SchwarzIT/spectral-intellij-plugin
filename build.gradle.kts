@@ -8,17 +8,17 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version "2.1.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.15.0"
+    id("org.jetbrains.intellij") version "1.17.4"
     // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "2.2.0"
+    id("org.jetbrains.changelog") version "2.2.1"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
     // Gradle Kover Plugin
-    id("org.jetbrains.kotlinx.kover") version "0.7.3"
+    id("org.jetbrains.kotlinx.kover") version "0.9.1"
 
-    kotlin("plugin.serialization") version "1.9.10"
+    kotlin("plugin.serialization") version "2.1.10"
 }
 
 group = properties("pluginGroup").get()
@@ -139,9 +139,9 @@ tasks {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
-    implementation("org.springframework:spring-core:6.0.11")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.10")
+    implementation("org.springframework:spring-core:6.2.2")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
 }
