@@ -1,18 +1,14 @@
 # Spectral Linter Plugin for JetBrains
 
-![Build](https://github.com/SchwarzIT/spectral-intellij-plugin/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/com.schwarzit.spectral-intellij-plugin.svg)](https://plugins.jetbrains.com/plugin/com.schwarzit.spectral-intellij-plugin)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/com.schwarzit.spectral-intellij-plugin.svg)](https://plugins.jetbrains.com/plugin/com.schwarzit.spectral-intellij-plugin)
-
 <!-- Plugin description -->
 This plugin is a wrapper for the tool <a href="https://github.com/stoplightio/spectral">Spectral</a>, a linter for
-OpenApi schemas.
+OpenApi schemas. It is a fork of https://github.com/SchwarzIT/spectral-intellij-plugin
 
 ## Installation
 
 - Using IDE built-in plugin system:
 
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Spectral"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Spectral Linter"</kbd> >
   <kbd>Install Plugin</kbd>
 
 - Manually:
@@ -21,7 +17,7 @@ OpenApi schemas.
   it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
-Since version 2 of this plugin it is required to have the spectral CLI installed on your system.
+This plugin it is required to have the spectral CLI installed on your system.
 If you don't have it installed yet make sure to follow this
 guide: [Installing Spectral](https://docs.stoplight.io/docs/spectral/b8391e051b7d8-installation)
 
@@ -39,12 +35,12 @@ Specify your own [ruleset](https://meta.stoplight.io/docs/spectral/ZG9jOjYyMDc0N
 settings, under Preferences -> Tools -> Spectral -> Ruleset.
 
 There you can specify a file on your local machine or just paste the URL of a ruleset available on the internet
-e.g.: [Schwarz IT API linting rules](https://github.com/SchwarzIT/api-linter-rules).
+e.g.: [Zalando Ruleset](https://raw.githubusercontent.com/baloise-incubator/spectral-ruleset/main/zalando.yml).
 
 Examples:
 
-- Link to a hosted ruleset: `https://raw.githubusercontent.com/SchwarzIT/api-linter-rules/main/spectral-api.yml`
-- Local ruleset relative to Project base-path: `.spectral.json`
+- Link to a hosted ruleset: `https://raw.githubusercontent.com/baloise-incubator/spectral-ruleset/main/zalando.yml`
+- Local ruleset relative to Project base-path: `.spectral.yaml`
 - Fully-qualified path: `/Users/user/.spectral.yaml`
 
 ### Configurable Included path patterns
@@ -52,7 +48,7 @@ Examples:
 Select the files that will be linted. By default, every file called "openapi.json", "openapi.yml" or "openapi.yaml"
 within the Project root will be matched for linting by the plugin when it's opened.
 
-You can adjust this in the settings under Preferences -> Tools -> Spectral -> Included path patterns. All paths are
+You can adjust this in the settings under Preferences -> Tools -> Spectral Linter -> Included path patterns. All paths are
 relative to the project's root directory unless absolute.
 
 Examples:
@@ -67,6 +63,27 @@ association.
 If it is detected as a plain text (or any other type) it will be ignored.
 
 <!-- Plugin description end -->
+
+## Building the plugin
+### Building
+```bash
+./gradlew build  
+```
+
+### Run compatibility tests
+```bash
+ 
+```
+
+### Run UI tests
+```bash
+./gradlew runIdeForUiTests
+```
+
+### Publish new version
+```bash
+./gradlew publish  
+```
 
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].

@@ -1,6 +1,8 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 
 val kotlinxSerializationJsonVersion = "1.7.3"
 val kotlinReflectVersion = "2.1.0"
@@ -17,9 +19,7 @@ val platformVersion = properties("platformVersion").get()
 val pluginVersion = properties("pluginVersion").get()
 
 val pluginGroup = properties("pluginGroup").get()
-
-val publishToken = environment("PUBLISH_TOKEN").get()
-val privateKeyPassword = environment("PRIVATE_KEY_PASSWORD").get()
+val sinceBuild = properties("pluginSinceBuild").get()
 
 plugins {
     id("java")
@@ -77,7 +77,6 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set(properties("pluginSinceBuild"))
-        untilBuild.set(properties("pluginUntilBuild"))
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
         pluginDescription.set(providers.fileContents(layout.projectDirectory.file("README.md")).asText.map {
@@ -130,10 +129,12 @@ val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
 dependencies {
     intellijPlatform {
         intellijIdeaCommunity(platformVersion)
-        bundledPlugins(properties("platformBundledPlugins").get()
-            .split(',')
-            .map(String::trim)
-            .filter(String::isNotEmpty))
+        bundledPlugins(
+            properties("platformBundledPlugins").get()
+                .split(',')
+                .map(String::trim)
+                .filter(String::isNotEmpty)
+        )
 
         plugin("com.intellij.modules.json:$intelliJJsonVersion")
 
@@ -170,12 +171,22 @@ intellijPlatform {
     }
 
     publishing {
+        val publishToken = environment("PUBLISH_TOKEN").get()
         token.set(publishToken)
     }
 
     signing {
+        val privateKeyPassword = environment("PRIVATE_KEY_PASSWORD").get()
+
         certificateChainFile.set(file("certificate/private.pem"))
         privateKeyFile.set(file("certificate/private.pem"))
         password.set(privateKeyPassword)
+    }
+
+    pluginVerification {
+        ides {
+            ide(IntelliJPlatformType.IntellijIdeaCommunity, platformVersion)
+            recommended()
+        }
     }
 }
