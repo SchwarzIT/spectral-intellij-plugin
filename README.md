@@ -13,7 +13,7 @@ OpenApi schemas. It is a fork of https://github.com/SchwarzIT/spectral-intellij-
 
 - Manually:
 
-  Download the [latest release](https://github.com/SchwarzIT/spectral-intellij-plugin/releases/latest) and install
+  Install
   it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
