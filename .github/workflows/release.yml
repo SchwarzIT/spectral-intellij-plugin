@@ -50,6 +50,10 @@ jobs:
       - name: Patch Changelog
         if: ${{ steps.properties.outputs.changelog != '' }}
         env:
+          PUBLISH_TOKEN: ${{ secrets.JETBRAINS_PUBLISH_TOKEN }}
+          CERTIFICATE_CHAIN: ${{ secrets.CERTIFICATE_CHAIN }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          PRIVATE_KEY_PASSWORD: ${{ secrets.JETBRAINS_MARKETPLACE_CERTIFICATE_PASSWORD }}
           CHANGELOG: ${{ steps.properties.outputs.changelog }}
         run: |
           ./gradlew patchChangelog --release-note="$CHANGELOG"
