@@ -1,8 +1,10 @@
 import org.jetbrains.changelog.Changelog
+import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.models.ProductRelease
+
 
 val kotlinxSerializationJsonVersion = "1.7.3"
 val kotlinReflectVersion = "2.1.0"
@@ -70,7 +72,6 @@ tasks {
     wrapper {
         gradleVersion = properties("gradleVersion").get()
     }
-
     test { useJUnitPlatform() }
 }
 
@@ -189,8 +190,6 @@ intellijPlatform {
 changelog {
     version.set(properties("pluginVersion").get())
     path.set(file("CHANGELOG.md").canonicalPath)
-    header.set(provider { "[${version.get()}] - ${date()}" })
-    headerParserRegex.set("""(\d+\.\d+)""".toRegex())
     itemPrefix.set("-")
     keepUnreleasedSection.set(true)
     unreleasedTerm.set("[Unreleased]")
