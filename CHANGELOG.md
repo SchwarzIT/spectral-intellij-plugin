@@ -5,6 +5,16 @@
 
 ## [Unreleased]
 
+## [0.0.4] - 2024-02-10
+### Fixed
+- Cleaned up config
+- Excluded EAP from verification
+
+### Added
+
+- Debugged and setup publishing
+- Changed how top level rules are displayed. Moved them to the top of the file
+
 ## [0.0.3] - 2024-12-02
 
 ### Added
