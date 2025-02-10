@@ -10,7 +10,8 @@ val springCoreVersion = "6.2.0"
 val junitJupiterVersion = "5.11.3"
 val junit4Version = "4.13.2"
 val commonsIoVersion = "2.18.0"
-val intelliJJsonVersion = "243.22562.13"
+val intelliJJsonVersion = "243.23654.117"
+val intelliJYamlVersion = "243.23654.189"
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
@@ -24,7 +25,7 @@ val sinceBuild = properties("pluginSinceBuild").get()
 plugins {
     id("java")
     kotlin("jvm") version "2.1.0"
-    id("org.jetbrains.intellij.platform") version "2.1.0"
+    id("org.jetbrains.intellij.platform") version "2.2.1"
     id("org.jetbrains.changelog") version "2.2.1"
     id("org.jetbrains.qodana") version "0.1.13"
     id("org.jetbrains.kotlinx.kover") version "0.7.3"
@@ -44,6 +45,7 @@ repositories {
 
     intellijPlatform {
         defaultRepositories()
+        localPlatformArtifacts()
     }
 }
 
@@ -129,16 +131,17 @@ val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
 dependencies {
     intellijPlatform {
         intellijIdeaCommunity(platformVersion)
-        bundledPlugins(
-            properties("platformBundledPlugins").get()
-                .split(',')
-                .map(String::trim)
-                .filter(String::isNotEmpty)
-        )
+        var plugins = properties("platformBundledPlugins").get()
+            .split(',')
+            .map(String::trim)
+            .filter(String::isNotEmpty)
+
+        for (pluginId in plugins) {
+            bundledPlugin(pluginId)
+        }
 
         plugin("com.intellij.modules.json:$intelliJJsonVersion")
 
-        instrumentationTools()
         pluginVerifier()
         zipSigner()
         testFramework(TestFrameworkType.Platform)
