@@ -3,14 +3,14 @@
 
 # Changelog
 
-## [Released]
-
 ## [0.0.4] - 2025-02-10
 
 ### Fixed
 
 - Excluded EAP version
 - Cleaned up build script
+
+## [Unreleased]
 
 ## [0.0.3] - 2024-12-02
 
