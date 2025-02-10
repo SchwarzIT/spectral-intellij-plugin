@@ -139,9 +139,24 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
     }
 
     private fun calculateIssueTextRange(document: Document, range: ErrorRange): TextRange {
-        val startOffset = document.getLineStartOffset(range.start.line) + range.start.character
-        val endOffset = document.getLineStartOffset(range.end.line) + range.end.character
+        val lineStartOffset = document.getLineStartOffset(range.start.line)
+        val lineEndOffset = document.getLineStartOffset(range.start.line) + range.start.character - 1
 
-        return TextRange(startOffset, endOffset)
+        val startLine = TextRange(lineStartOffset, lineEndOffset)
+        println(document.getText(startLine))
+        val lineWhiteSpaceCount = countLeadingWhiteSpace(document.getText(startLine))
+        return TextRange(lineStartOffset + lineWhiteSpaceCount, lineEndOffset)
+    }
+
+    private fun countLeadingWhiteSpace(line: String): Int {
+        var count = 0
+        for (char in line) {
+            if (Character.isWhitespace(char)){
+                count++
+            } else {
+                break
+            }
+        }
+        return count
     }
 }
