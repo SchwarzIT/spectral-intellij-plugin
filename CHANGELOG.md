@@ -5,8 +5,29 @@
 
 ## [Unreleased]
 
-## [0.0.4] - 2024-02-10
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
 ### Fixed
+
+### Security
+
+## 0.0.5 - 2025-02-10
+
+### Fixed
+
+- Fixed release workflow and config
+- First version to be released publicly
+
+## 0.0.4 - 2024-02-10
+
+### Fixed
+
 - Cleaned up config
 - Excluded EAP from verification
 
@@ -15,21 +36,21 @@
 - Debugged and setup publishing
 - Changed how top level rules are displayed. Moved them to the top of the file
 
-## [0.0.3] - 2024-12-02
+## 0.0.3 - 2024-12-02
 
 ### Added
 
 - Debugged and setup publishing
 - Changed how top level rules are displayed. Moved them to the top of the file
 
-## [0.0.2] - 2024-12-02
+## 0.0.2 - 2024-12-02
 
 ### Fixed
 
 - Fixed bugs and compatibility issues
 - Set up builds
 
-## [0.0.1] - 2024-11-29
+## 0.0.1 - 2024-11-29
 
 ### Created
 
