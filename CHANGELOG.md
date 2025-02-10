@@ -17,6 +17,14 @@
 
 ### Security
 
+## 0.0.6 - 2025-02-10
+
+### Changed
+
+- Reduced noise in the output
+- Changed annotations to be only on the first line of the violation and not on one level down
+- Added misc fixes from the original repository
+
 ## 0.0.5 - 2025-02-10
 
 ### Fixed
