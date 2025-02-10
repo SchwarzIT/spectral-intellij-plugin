@@ -3,6 +3,15 @@
 
 # Changelog
 
+## [Released]
+
+## [0.0.4] - 2025-02-10
+
+### Added
+
+- Debugged and setup publishing
+- Changed how top level rules are displayed. Moved them to the top of the file
+
 ## [0.0.3] - 2024-12-02
 
 ### Added
