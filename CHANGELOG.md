@@ -7,10 +7,10 @@
 
 ## [0.0.4] - 2025-02-10
 
-### Added
+### Fixed
 
-- Debugged and setup publishing
-- Changed how top level rules are displayed. Moved them to the top of the file
+- Excluded EAP version
+- Cleaned up build script
 
 ## [0.0.3] - 2024-12-02
 
