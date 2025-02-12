@@ -10,7 +10,7 @@ class ProjectSettingsConfigurable(private val project: Project) : Configurable {
     private lateinit var settingsComponent: SettingsComponent
 
     override fun createComponent(): JComponent {
-        val settings = project.service<ProjectSettingsState>()
+        val settings = project.getService(ProjectSettingsState::class.java)
         settingsComponent = SettingsComponent()
 
         settingsComponent.rulesetInput.text = settings.ruleset

@@ -1,9 +1,7 @@
 import org.jetbrains.changelog.Changelog
-import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 
 
 val kotlinxSerializationJsonVersion = "1.7.3"
@@ -12,6 +10,7 @@ val springCoreVersion = "6.2.0"
 val junitJupiterVersion = "5.11.3"
 val junit4Version = "4.13.2"
 val commonsIoVersion = "2.18.0"
+val swaggerParserVersion = "2.1.25"
 val intelliJJsonVersion = "243.23654.117"
 val intelliJYamlVersion = "243.23654.189"
 
@@ -96,7 +95,7 @@ val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
 dependencies {
     intellijPlatform {
         intellijIdeaCommunity(platformVersion)
-        var plugins = properties("platformBundledPlugins").get()
+        val plugins = properties("platformBundledPlugins").get()
             .split(',')
             .map(String::trim)
             .filter(String::isNotEmpty)
@@ -166,16 +165,16 @@ intellijPlatform {
     }
 
     publishing {
-        val publishToken = environment("PUBLISH_TOKEN").get()
-        token.set(publishToken)
+        val publishToken = environment("PUBLISH_TOKEN")
+        token.set(publishToken.getOrNull())
     }
 
     signing {
-        val privateKeyPassword = environment("PRIVATE_KEY_PASSWORD").get()
+        val privateKeyPassword = environment("PRIVATE_KEY_PASSWORD")
 
         certificateChainFile.set(file("certificate/private.pem"))
         privateKeyFile.set(file("certificate/private.pem"))
-        password.set(privateKeyPassword)
+        password.set(privateKeyPassword.getOrNull())
     }
 
     pluginVerification {
@@ -191,7 +190,7 @@ changelog {
     version.set(properties("pluginVersion").get())
     path.set(file("CHANGELOG.md").canonicalPath)
     itemPrefix.set("-")
-    keepUnreleasedSection.set(true)
+    keepUnreleasedSection.set(false)
     unreleasedTerm.set("[Unreleased]")
     groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
     lineSeparator.set("\n")
