@@ -2,11 +2,13 @@ package com.schwarzit.spectralIntellijPlugin
 
 import com.intellij.lang.annotation.HighlightSeverity
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class SpectralIssue(
     val code: String,
-    val path: List<String>,
+    // the elements aren't always strings and can be numeric
+    val path: List<JsonElement>,
     val message: String,
     val severity: Int,
     val source: String,

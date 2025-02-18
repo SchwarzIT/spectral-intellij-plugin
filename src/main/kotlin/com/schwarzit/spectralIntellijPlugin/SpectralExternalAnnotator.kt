@@ -83,10 +83,8 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
         }
 
         val linter = project.service<SpectralRunner>()
-
         return try {
-            val issues = linter.run(editor.document.text)
-
+            val issues = linter.run(editor.document)
             issues
         } catch (e: Throwable) {
             logger.error(e)
@@ -100,16 +98,16 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
 
         if (issues == null) return
 
-        if (issues.any { issue -> issue.code == "unrecognized-format" }) {
+        val fileLevelIssueCodes = listOf("unrecognized-format", "parser-error")
+        if (issues.any { issue -> fileLevelIssueCodes.contains(issue.code) }) {
             logger.warn("Linted openapi spec is not valid: Skipping linting")
-            holder.newAnnotation(HighlightSeverity.WARNING, "File is not formatted correctly. Linting was skipped.")
+            holder.newAnnotation(HighlightSeverity.WARNING, issues.first().message)
                 .fileLevel()
                 .create()
             return
         }
 
         for (issue in issues) {
-            // It happens that spectral produces invalid text ranges, those will just be ignored
             var textRange: TextRange
             try {
                 textRange = calculateIssueTextRange(document, issue.range)
@@ -143,7 +141,6 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
         val lineEndOffset = document.getLineStartOffset(range.start.line) + range.start.character - 1
 
         val startLine = TextRange(lineStartOffset, lineEndOffset)
-        println(document.getText(startLine))
         val lineWhiteSpaceCount = countLeadingWhiteSpace(document.getText(startLine))
         return TextRange(lineStartOffset + lineWhiteSpaceCount, lineEndOffset)
     }
@@ -151,7 +148,7 @@ class SpectralExternalAnnotator : ExternalAnnotator<Pair<PsiFile, Editor>, List<
     private fun countLeadingWhiteSpace(line: String): Int {
         var count = 0
         for (char in line) {
-            if (Character.isWhitespace(char)){
+            if (Character.isWhitespace(char)) {
                 count++
             } else {
                 break

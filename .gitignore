@@ -4,3 +4,4 @@
 build
 .intellijPlatform
 certificates
+.run
