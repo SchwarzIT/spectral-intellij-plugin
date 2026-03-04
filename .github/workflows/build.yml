@@ -16,12 +16,11 @@ name: Build
 on:
   # Trigger the workflow on pushes to only the 'main' branch (this avoids duplicate checks being run e.g. for dependabot pull requests)
   push:
-    branches: [ main ]
+    branches: [main]
   # Trigger the workflow on any pull request
   pull_request:
 
 jobs:
-
   # Run Gradle Wrapper Validation Action to verify the wrapper's checksum
   # Run verifyPlugin, IntelliJ Plugin Verifier, and test Gradle tasks
   # Build plugin and provide the artifact for the next workflow jobs
@@ -63,7 +62,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "name=$NAME" >> $GITHUB_OUTPUT
           echo "pluginVerifierHomeDir=~/.pluginVerifier" >> $GITHUB_OUTPUT
-          
+
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -77,7 +76,7 @@ jobs:
       # Collect Tests Result of failed tests
       - name: Collect Tests Result
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: tests-result
           path: ${{ github.workspace }}/build/reports/tests
@@ -89,7 +88,7 @@ jobs:
           files: ${{ github.workspace }}/build/reports/kover/xml/report.xml
 
   verifyPlugin:
-    name: "Run Plugin Verifier"
+    name: 'Run Plugin Verifier'
     runs-on: ubuntu-latest
     if: false # The verifyPlugin step was disabled as it consumed more storage than available on the default github action runner
     steps:
@@ -150,7 +149,7 @@ jobs:
       # Collect Plugin Verifier Result
       - name: Collect Plugin Verifier Result
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: pluginVerifier-result
           path: ${{ github.workspace }}/build/reports/pluginVerifier
@@ -173,7 +172,7 @@ jobs:
 
       # Store already-built plugin as an artifact for downloading
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.artifact.outputs.filename }}
           path: ./build/distributions/content/*/*
@@ -188,7 +187,6 @@ jobs:
     permissions:
       contents: write
     steps:
-
       # Check out current repository
       - name: Fetch Sources
         uses: actions/checkout@v4
